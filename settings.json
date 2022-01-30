@@ -1,0 +1,18 @@
+{
+    "pyaudio": {
+        "chunk": 2048,
+        "rate": 44100,
+        "channels": 1
+    },
+    "debug": {
+        "rounding": 2,
+        "spacing": 25,
+        "bars": 50,
+        "bar_symbol": "#"
+    },
+    "behaviour":{
+        "max_minimum": 40000,
+        "max_decrease_percentage": 0.05,
+        "peak_decrease_percentage": 10
+    }
+}
