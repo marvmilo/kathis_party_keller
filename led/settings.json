@@ -1,0 +1,58 @@
+{
+    "single": {
+        "color1": true,
+        "color2": false,
+        "blur_factor": false,
+        "interval": false,
+        "fade_out": false
+    },
+    "two_color": {
+        "color1": true,
+        "color2": true,
+        "blur_factor": [0,10],
+        "interval": false,
+        "fade_out": false
+    },
+    "pulse": {
+        "color1": true,
+        "color2": true,
+        "blur_factor": [1,10],
+        "interval": false,
+        "fade_out": false
+    },
+    "shoot": {
+        "color1": true,
+        "color2": true,
+        "blur_factor": [0,10],
+        "interval": [5, 20],
+        "fade_out": [0, 10]
+    },
+    "rainbow": {
+        "color1": false,
+        "color2": false,
+        "blur_factor": false,
+        "interval": [10, 100],
+        "fade_out": false
+    },
+    "audio_pegel": {
+        "color1": true,
+        "color2": true,
+        "blur_factor": [0,10],
+        "interval": false,
+        "fade_out": [0, 50]
+    },
+    "audio_shoot": {
+        "color1": true,
+        "color2": true,
+        "blur_factor": [0,10],
+        "interval": false,
+        "fade_out": [0, 20]
+    },
+    "audio_shoot": {
+        "color1": true,
+        "color2": true,
+        "blur_factor": [0,10],
+        "interval": false,
+        "fade_out": [0, 20]
+    }
+}

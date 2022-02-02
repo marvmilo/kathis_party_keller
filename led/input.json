@@ -1,0 +1,10 @@
+{
+    "mode": "single",
+    "color": [
+        [255, 0, 0],
+        [0, 255, 0]
+    ],
+    "blur_factor": 0.5,
+    "interval": 0.5,
+    "fade_out": 0.5
+}
