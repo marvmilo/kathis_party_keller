@@ -1,5 +1,5 @@
 {
-    "mode": "single",
+    "mode": "two_color",
     "color": [
         [255, 0, 0],
         [0, 255, 0]

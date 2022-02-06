@@ -48,11 +48,11 @@
         "interval": false,
         "fade_out": [0, 20]
     },
-    "audio_shoot": {
+    "audio_brightness": {
         "color1": true,
         "color2": true,
-        "blur_factor": [0,10],
+        "blur_factor": false,
         "interval": false,
-        "fade_out": [0, 20]
+        "fade_out": [0, 10]
     }
 }
