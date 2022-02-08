@@ -15,7 +15,7 @@ sudo pip3 install adafruit-circuitpython-neopixel
 ## Two Color blured (two_color):
 - color1
 - color2
-- blur factor → 10px - 150px
+- blur factor → 0px - 150px
 # Modes Animation
 ## Pulse (pulse):
 - color1
@@ -24,7 +24,7 @@ sudo pip3 install adafruit-circuitpython-neopixel
 ## Shoot (shoot):
 - color1
 - color 2
-- interval → 0s - 10s
+- interval → 1s - 10s
 - fade out → 5s - 20s
 - blur factor → 0px - 10px
 ## Rainbow (rainbow):

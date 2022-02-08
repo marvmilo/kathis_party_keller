@@ -1,10 +1,10 @@
 {
-    "mode": "two_color",
+    "mode": "shoot",
     "color": [
         [255, 0, 0],
-        [0, 255, 0]
+        [0, 0, 255]
     ],
     "blur_factor": 0.5,
-    "interval": 0.5,
-    "fade_out": 0.5
+    "interval": 1,
+    "fade_out": 1
 }
