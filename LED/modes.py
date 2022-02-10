@@ -65,29 +65,40 @@ def pulse(input_vals, pipe):
     
     #values
     i = 0
-    ticks = 200
-    steps = ticks/2
     interval_min = 0.1
     interval_max = 10
     interval = ((interval_max - interval_min) * input_vals.interval) + interval_min
-    tick_interval = interval / ticks
+    interval_last = time.time()
+    color1 = input_vals.color[0]
+    color2 = input_vals.color[1]
     
     while True:
-        #reset interval
-        if i > ticks:
-            i = 0
-        
-        #set color
-        if i <= steps:
-            color = [int(c*(i/steps)) for c in input_vals.color[0]]
+        interval_current = time.time() - interval_last
+        if interval_current < interval/2:
+            factor = interval_current / (interval/2)
+            color = [int(abs(c1*factor + (c2*(1-factor)))) for c1, c2 in zip(color1, color2)]
+            #set color
+            for i in range(strip.numPixels()):
+                strip.setPixelColor(i, led.Color(*color))
+            strip.show()
         else:
-            color = [int(c*(1 - ((i - steps)/steps))) for c in input_vals.color[0]]
-        for p in range(strip.numPixels()):
-            strip.setPixelColor(p, led.Color(*color))
-        strip.show()
+            interval_last = time.time()
+            color1, color2 = color2, color1
+
+        #reset interval
+        # if i > ticks:
+        #     i = 0
+        
+        # #set color
+        # if i <= steps:
+        #     color = [int(c*(i/steps)) for c in input_vals.color[0]]
+        # else:
+        #     color = [int(c*(1 - ((i - steps)/steps))) for c in input_vals.color[0]]
+        # for p in range(strip.numPixels()):
+        #     strip.setPixelColor(p, led.Color(*color))
+        # strip.show()
             
-        i += 1
-        time.sleep(tick_interval)
+        # i += 1
         #check for end of thread
         if pipe.exit:
             pipe.done = True
@@ -100,26 +111,28 @@ def shoot(input_vals, pipe):
     i = 0
     colors = [input_vals.color[1] for i in range(strip.numPixels())]
     color = input_vals.color[0]
-    interval_min = 0.25
+    blur_color = input_vals.color[1]
+    interval_min = 0.1
     interval_max = 5
     interval = ((interval_max - interval_min) * input_vals.interval) + interval_min
     interval_last = time.time()
-    fade_out_min = 1
+    fade_out_min = 0.25
     fade_out_max = 15
     fade_out = ((fade_out_max - fade_out_min) * (input_vals.fade_out)) + fade_out_min
     time_per_pixel = fade_out / strip.numPixels()
     move_last = time.time()
     move_interval = 0
-    print(interval, fade_out)
-        
+    blur_time = interval * input_vals.blur_factor / 2
     
     while True:
         #change color at interval
         if (time.time() - interval_last) >= (interval / 2):
             if color ==  input_vals.color[0]:
                 color = input_vals.color[1]
+                blur_color = input_vals.color[0]
             else:
                 color = input_vals.color[0]
+                blur_color = input_vals.color[1]
             interval_last = time.time()
         
         #insert color
@@ -128,7 +141,16 @@ def shoot(input_vals, pipe):
         move_leds = int(move_interval / time_per_pixel)
         move_interval = move_interval % time_per_pixel
         for l in range(move_leds):
-            colors.insert(0, color)
+            current_intervall = time.time() - interval_last
+            blured_color = color
+            if current_intervall < blur_time:
+                #print(current_intervall)
+                try:
+                    blur_factor = current_intervall / blur_time
+                except ZeroDivisionError:
+                    blur_factor = 0
+                blured_color = [int(abs(c1*blur_factor + (c2*(1-blur_factor)))) for c1, c2 in zip(color, blur_color)]
+            colors.insert(0, blured_color)
             del colors[-1]
         
         #set colors
