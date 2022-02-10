@@ -2,6 +2,9 @@ import threading
 import time
 import rpi_ws281x as led
 
+#import other scripts
+from . import audio
+
 # LED strip configuration:
 LED_COUNT      = 150      # Number of LED pixels.
 LED_PIN        = 18      # GPIO pin connected to the pixels (18 uses PWM!).
@@ -15,6 +18,10 @@ LED_CHANNEL    = 0       # set to '1' for GPIOs 13, 19, 41, 45 or 53
 #init LED strip
 strip = led.Adafruit_NeoPixel(LED_COUNT, LED_PIN, LED_FREQ_HZ, LED_DMA, LED_INVERT, LED_BRIGHTNESS, LED_CHANNEL)
 strip.begin()
+
+#init pyaudio thread
+audio_thread = audio.Thread()
+audio_thread.start()
 
 # single mode function
 def single(input_vals, pipe):
@@ -85,20 +92,6 @@ def pulse(input_vals, pipe):
             interval_last = time.time()
             color1, color2 = color2, color1
 
-        #reset interval
-        # if i > ticks:
-        #     i = 0
-        
-        # #set color
-        # if i <= steps:
-        #     color = [int(c*(i/steps)) for c in input_vals.color[0]]
-        # else:
-        #     color = [int(c*(1 - ((i - steps)/steps))) for c in input_vals.color[0]]
-        # for p in range(strip.numPixels()):
-        #     strip.setPixelColor(p, led.Color(*color))
-        # strip.show()
-            
-        # i += 1
         #check for end of thread
         if pipe.exit:
             pipe.done = True
@@ -165,13 +158,38 @@ def shoot(input_vals, pipe):
     
 # rainbow mode function
 def rainbow(input_vals, pipe):
-    i = 0
+    print("rainbow")
+
+    #values
+    interval_min = 1
+    interval_max = 30
+    interval = (((interval_max - interval_min) * input_vals.interval) + interval_min)/256
+    interval_last = time.time()
+    print(interval)
+
+    #rainbowwheel
+    def wheel(pos):
+        if pos < 85:
+            return led.Color(pos * 3, 255 - pos * 3, 0)
+        elif pos < 170:
+            pos -= 85
+            return led.Color(255 - pos * 3, 0, pos * 3)
+        else:
+            pos -= 170
+            return led.Color(0, pos * 3, 255 - pos * 3)
     
     while True:
-        print("rainbow", i)
-        i += 1
+        #set colors
+        for j in range(256):
+            for i in range(strip.numPixels()):
+                strip.setPixelColor(i, wheel((int(i * 256 / strip.numPixels()) + j) & 255))
+            strip.show()
+            while True:
+                current_interval = time.time() - interval_last
+                if current_interval >= interval:
+                    interval_last = time.time()
+                    break
         
-        time.sleep(1)
         #check for end of thread
         if pipe.exit:
             pipe.done = True
@@ -179,13 +197,22 @@ def rainbow(input_vals, pipe):
 
 # audio_pegel mode function
 def audio_pegel(input_vals, pipe):
-    i = 0
-    
+    print("audio_pegel")
+
     while True:
-        print("audio_pegel", i)
-        i += 1
+        try:
+            leds = int(strip.numPixels() * audio.percentage)
+        except ValueError:
+            leds = 0
         
-        time.sleep(1)
+        #set color
+        for i in range(strip.numPixels()):
+            if i <= leds:
+                strip.setPixelColor(i, led.Color(*input_vals.color[0]))
+            else:
+                strip.setPixelColor(i, led.Color(*input_vals.color[1]))
+        strip.show()
+
         #check for end of thread
         if pipe.exit:
             pipe.done = True

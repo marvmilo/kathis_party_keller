@@ -24,8 +24,8 @@ https://github.com/jgarff/rpi_ws281x/issues/483
 - interval → 0.1s - 5s
 - fade out → 0.25s - 15s
 - blur factor → 0% - 100%
-## ❌ Rainbow (rainbow):
-- interval → 10s - 100s
+## ✅ Rainbow (rainbow):
+- interval → 1s - 30s
 # Modes Audio Visiulizer
 ## ❌ Pegel (audio_pegel):
 - color1
