@@ -1,6 +1,6 @@
 {
     "pyaudio": {
-        "chunk": 2048,
+        "chunk": 512,
         "rate": 44100,
         "channels": 1
     },
@@ -13,6 +13,6 @@
     "behaviour":{
         "max_minimum": 40000,
         "max_decrease_percentage": 0.05,
-        "peak_decrease_percentage": 10
+        "peak_decrease_percentage": 2.5
     }
 }

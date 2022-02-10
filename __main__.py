@@ -26,7 +26,7 @@ stream = p.open(
 #main loop
 try:
     while True:
-        data = np.fromstring(stream.read(settings.pyaudio.chunk), dtype = np.int16)
+        data = np.fromstring(stream.read(settings.pyaudio.chunk, exception_on_overflow = False), dtype = np.int16)
         
         #visualize
         peak.value = np.average(np.abs(data))**2
