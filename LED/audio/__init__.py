@@ -14,6 +14,7 @@ peak = mmt.dictionary.toObj({
     "perc": 0
 })
 percentage = 0
+fade_out = 0
 
 #init pyaudio
 p = pyaudio.PyAudio()
@@ -32,7 +33,7 @@ def main():
         data = np.fromstring(stream.read(settings.pyaudio.chunk, exception_on_overflow = False), dtype = np.int16)
         
         #visualize
-        peak.value = np.average(np.abs(data))
+        peak.value = np.average(np.abs(data))**2
         if not peak.min and not peak.max:
             peak.min, peak.max = peak.value, peak.value
         if peak.value < peak.min:
@@ -44,7 +45,7 @@ def main():
             if peak.value > settings.behaviour.minimum:
                 peak.max = peak.value
             else:
-                peak.max = settings.behaviour.minimum + 1
+                peak.max = settings.behaviour.minimum
         peak.range = peak.max - peak.min
         peak.value = peak.value - peak.min
         if peak.value < 0:
@@ -65,7 +66,6 @@ def main():
             peak.value = peak.last * (1-max_change_perc)
         
         #set fade out
-        fade_out = 0.75
         fade_out_percentage = (settings.behaviour.max_peak_decrease_percentage - settings.behaviour.min_peak_decrease_percentage) * fade_out
         peak_decrease = peak.range * (settings.behaviour.max_peak_decrease_percentage - fade_out_percentage)
         if peak.last - peak_decrease > peak.value:
@@ -76,6 +76,8 @@ def main():
         peak.perc = peak.value / peak.range
         if peak.perc > 1:
             peak.perc = 1
+        if peak.value < peak.min:
+            peak.perc = 0
         
         #display
         if settings.debug.status:

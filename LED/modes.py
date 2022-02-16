@@ -199,16 +199,29 @@ def rainbow(input_vals, pipe):
 def audio_pegel(input_vals, pipe):
     print("audio_pegel")
 
+    #declared values
+    max_blur = 75
+    blur = int(input_vals.blur_factor * max_blur)
+    extra_leds = blur*2
+    print(blur)
+
+    #prepare audio
+    audio.fade_out = input_vals.fade_out
+
     while True:
         try:
-            leds = int(strip.numPixels() * audio.percentage)
+            leds = int((strip.numPixels() + blur) * audio.percentage)
         except ValueError:
             leds = 0
-        
+
         #set color
-        for i in range(strip.numPixels()):
-            if i <= leds:
+        for i in range(-blur, strip.numPixels()):
+            if i < (leds - blur):
                 strip.setPixelColor(i, led.Color(*input_vals.color[0]))
+            elif i < (leds):
+                blur_factor = (leds - i)/blur
+                color = [int(abs(c1*blur_factor + (c2*(1-blur_factor)))) for c1, c2 in zip(input_vals.color[0], input_vals.color[1])]
+                strip.setPixelColor(i, led.Color(*color))
             else:
                 strip.setPixelColor(i, led.Color(*input_vals.color[1]))
         strip.show()

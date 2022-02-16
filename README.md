@@ -27,11 +27,11 @@ https://github.com/jgarff/rpi_ws281x/issues/483
 ## ✅ Rainbow (rainbow):
 - interval → 1s - 30s
 # Modes Audio Visiulizer
-## ❌ Pegel (audio_pegel):
+## ✅ Pegel (audio_pegel):
 - color1
 - color2
-- fade out → 0s - 10s
-- blur factor → 0px - 50px
+- fade out → 0.25% - 0.5%
+- blur factor → 0px - 75px
 ## ❌ Shoot (audio_shoot):
 - color1
 - color2

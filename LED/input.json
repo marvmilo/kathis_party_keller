@@ -2,9 +2,9 @@
     "mode": "audio_pegel",
     "color": [
         [0, 0, 255],
-        [0, 0, 0]
+        [25, 0, 0]
     ],
     "blur_factor": 0.25,
     "interval": 0.25,
-    "fade_out": 0.25
+    "fade_out": 0.75
 }
