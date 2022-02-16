@@ -12,8 +12,11 @@
         "bar_symbol": "#"
     },
     "behaviour":{
-        "max_minimum": 40000,
-        "max_decrease_percentage": 0.05,
-        "peak_decrease_percentage": 1.5
+        "minimum": 80,
+        "max_decrease_percentage": 0.0001,
+        "min_peak_decrease_percentage": 0.0025,
+        "max_peak_decrease_percentage": 0.05,
+        "max_change_percentage": 0.05,
+        "skip_percentage": 0.25
     }
 }

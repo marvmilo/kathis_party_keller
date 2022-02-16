@@ -32,29 +32,50 @@ def main():
         data = np.fromstring(stream.read(settings.pyaudio.chunk, exception_on_overflow = False), dtype = np.int16)
         
         #visualize
-        peak.value = np.average(np.abs(data))**2
+        peak.value = np.average(np.abs(data))
         if not peak.min and not peak.max:
             peak.min, peak.max = peak.value, peak.value
-        elif peak.value < peak.min:
-            peak.min = peak.value
-        elif peak.value > peak.max:
-            peak.max = peak.value
+        if peak.value < peak.min:
+            if peak.value > settings.behaviour.minimum:
+                peak.min = peak.value
+            else:
+                peak.min = settings.behaviour.minimum
+        if peak.value > peak.max:
+            if peak.value > settings.behaviour.minimum:
+                peak.max = peak.value
+            else:
+                peak.max = settings.behaviour.minimum + 1
         peak.range = peak.max - peak.min
         peak.value = peak.value - peak.min
+        if peak.value < 0:
+            peak.value = 0
         
-        #set behaviour
-        max_decrease = peak.range * settings.behaviour.max_decrease_percentage/100
-        if not peak.max - max_decrease < settings.behaviour.max_minimum:
-            peak.max -= max_decrease
+        # decrease max values
+        max_decrease = peak.range * settings.behaviour.max_decrease_percentage
+        peak.max -= max_decrease
+
+        #flat led noise
+        max_change_perc = settings.behaviour.max_change_percentage
+        change_perc = abs(peak.last - peak.value)/peak.range
+        if change_perc > settings.behaviour.skip_percentage:
+            pass
+        elif peak.value > peak.last:
+            peak.value = peak.last * (1+max_change_perc)
         else:
-            peak.max = settings.behaviour.max_minimum
-        peak_decrease = peak.range * settings.behaviour.peak_decrease_percentage/100
+            peak.value = peak.last * (1-max_change_perc)
+        
+        #set fade out
+        fade_out = 0.75
+        fade_out_percentage = (settings.behaviour.max_peak_decrease_percentage - settings.behaviour.min_peak_decrease_percentage) * fade_out
+        peak_decrease = peak.range * (settings.behaviour.max_peak_decrease_percentage - fade_out_percentage)
         if peak.last - peak_decrease > peak.value:
             peak.value = peak.last - peak_decrease
         
         #set values
         peak.last = peak.value
         peak.perc = peak.value / peak.range
+        if peak.perc > 1:
+            peak.perc = 1
         
         #display
         if settings.debug.status:
