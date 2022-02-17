@@ -101,7 +101,6 @@ def pulse(input_vals, pipe):
 def shoot(input_vals, pipe):
     print("shoot")
     #values
-    i = 0
     colors = [input_vals.color[1] for i in range(strip.numPixels())]
     color = input_vals.color[0]
     blur_color = input_vals.color[1]
@@ -203,7 +202,6 @@ def audio_pegel(input_vals, pipe):
     max_blur = 100
     blur = int(input_vals.blur_factor * max_blur)
     extra_leds = blur*2
-    print(blur)
 
     #prepare audio
     audio.fade_out = input_vals.fade_out
@@ -233,13 +231,65 @@ def audio_pegel(input_vals, pipe):
 
 # audio_shoot mode function
 def audio_shoot(input_vals, pipe):
-    i = 0
-    
+    print("audio_shoot")
+    #values
+    colors = [input_vals.color[1] for i in range(strip.numPixels())]
+    color = input_vals.color[0]
+    blur_color = input_vals.color[1]
+    interval_min = 0.1
+    interval_max = 2
+    interval = ((interval_max - interval_min) * input_vals.interval) + interval_min
+    interval_last = time.time()
+    fade_out_min = 0.25
+    fade_out_max = 7.5
+    fade_out = ((fade_out_max - fade_out_min) * (input_vals.fade_out)) + fade_out_min
+    time_per_pixel = fade_out / strip.numPixels()
+    move_last = time.time()
+    move_interval = 0
+    blur_time = interval * input_vals.blur_factor / 2
+
     while True:
-        print("audio_shoot", i)
-        i += 1
+        audio_perc = audio.percentage
+
+        #check for shoot
+        try:
+            if audio_perc >= last_audio_perc + 0.25:
+                color = [int(abs(c1*audio_perc + (c2*(1-audio_perc)))) for c1, c2 in zip(input_vals.color[0], input_vals.color[1])]
+                blur_color = input_vals.color[1]
+                interval_last = time.time()
+        except NameError:
+            pass
+        last_audio_perc = audio_perc
+
+
+        #change color at interval
+        if (time.time() - interval_last) >= (interval / 2):
+            color = input_vals.color[1]
+            blur_color = [int(abs(c1*audio_perc + (c2*(1-audio_perc)))) for c1, c2 in zip(input_vals.color[0], input_vals.color[1])]
         
-        time.sleep(1)
+        #insert color
+        move_interval += time.time() - move_last
+        move_last = time.time()
+        move_leds = int(move_interval / time_per_pixel)
+        move_interval = move_interval % time_per_pixel
+        for l in range(move_leds):
+            current_intervall = time.time() - interval_last
+            blured_color = color
+            if current_intervall < blur_time:
+                #print(current_intervall)
+                try:
+                    blur_factor = current_intervall / blur_time
+                except ZeroDivisionError:
+                    blur_factor = 0
+                blured_color = [int(abs(c1*(1-blur_factor) + (c2*blur_factor))) for c1, c2 in zip(color, blur_color)]
+            colors.insert(0, blured_color)
+            del colors[-1]
+        
+        #set colors
+        for p, c in enumerate(colors):
+            strip.setPixelColor(p, led.Color(*c))
+        strip.show()
+
         #check for end of thread
         if pipe.exit:
             pipe.done = True
@@ -247,13 +297,18 @@ def audio_shoot(input_vals, pipe):
 
 # audio_brightness mode function
 def audio_brightness(input_vals, pipe):
-    i = 0
-    
+    print("audio_brightness")
+    #prepare audio
+    audio.fade_out = input_vals.fade_out
+
     while True:
-        print("audio_brightness", i)
-        i += 1
-        
-        time.sleep(1)
+        audio_perc = audio.percentage
+        color = [int(abs(c1*audio_perc + (c2*(1-audio_perc)))) for c1, c2 in zip(input_vals.color[0], input_vals.color[1])]
+        #set color
+        for i in range(strip.numPixels()):
+            strip.setPixelColor(i, led.Color(*color))
+        strip.show()
+
         #check for end of thread
         if pipe.exit:
             pipe.done = True

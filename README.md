@@ -32,12 +32,13 @@ https://github.com/jgarff/rpi_ws281x/issues/483
 - color2
 - fade out → 0.25% - 0.5%
 - blur factor → 0px - 75px
-## ❌ Shoot (audio_shoot):
+## ✅ Shoot (audio_shoot):
 - color1
 - color2
-- fade out → 5s - 20s
-- blur factor → 0px - 10px
-## ❌ Brightness (audio_brightness):
+- fade out → 0.25s → 7.5s
+- interval → 0.1s - 2s
+- blur factor → 0% → 100%
+## ✅ Brightness (audio_brightness):
 - color1
 - color2
-- fade out → 0s - 10s
+- fade out → 0.25% - 0.5%
