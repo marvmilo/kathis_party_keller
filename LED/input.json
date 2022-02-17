@@ -4,7 +4,7 @@
         [0, 0, 255],
         [25, 0, 0]
     ],
-    "blur_factor": 0.25,
+    "blur_factor": 0.5,
     "interval": 0.25,
     "fade_out": 0.75
 }

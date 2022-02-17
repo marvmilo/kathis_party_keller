@@ -200,7 +200,7 @@ def audio_pegel(input_vals, pipe):
     print("audio_pegel")
 
     #declared values
-    max_blur = 75
+    max_blur = 100
     blur = int(input_vals.blur_factor * max_blur)
     extra_leds = blur*2
     print(blur)
