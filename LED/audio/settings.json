@@ -5,7 +5,7 @@
         "channels": 1
     },
     "debug": {
-        "status": false,
+        "status": true,
         "rounding": 2,
         "spacing": 25,
         "bars": 50,
