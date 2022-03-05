@@ -1,4 +1,8 @@
-import time
+import dash
+import dash_auth
+from dash import html
+import dash_bootstrap_components as dbc
+import marvmiloTools as mmt
 
 #import other scripts
 import LED
@@ -11,11 +15,3 @@ def start_LED_Thread():
 
 #starting led thread
 LED_thread = start_LED_Thread()
-
-#main loop
-try:
-    while True:
-        time.sleep(1)
-        LED_thread.is_alive()
-except KeyboardInterrupt:
-    exit()
