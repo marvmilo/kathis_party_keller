@@ -1,5 +1,8 @@
 {
     "name": "Kathis Party Keller",
+    "style": {
+        "logo": "/assets/logo.svg"
+    },
     "creds": {
         "user": "schnitzel123"
     },

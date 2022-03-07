@@ -3,7 +3,7 @@ import time
 import rpi_ws281x as led
 
 #import other scripts
-from . import audio
+import audio
 
 # LED strip configuration:
 LED_COUNT      = 150      # Number of LED pixels.
@@ -25,7 +25,6 @@ audio_thread.start()
 
 # single mode function
 def single(input_vals, pipe):
-    print("single")
     #set color
     for i in range(strip.numPixels()):
         strip.setPixelColor(i, led.Color(*input_vals.color[0]))
@@ -40,7 +39,6 @@ def single(input_vals, pipe):
     
 # two color mode function
 def two_color(input_vals, pipe):
-    print("two_color")
     #values
     blur_max = 150
     blur = int(blur_max * input_vals.blur_factor)
@@ -68,8 +66,6 @@ def two_color(input_vals, pipe):
 
 # pulse mode function
 def pulse(input_vals, pipe):
-    print("pulse")
-    
     #values
     i = 0
     interval_min = 0.1
@@ -99,7 +95,6 @@ def pulse(input_vals, pipe):
 
 # shoot mode function
 def shoot(input_vals, pipe):
-    print("shoot")
     #values
     colors = [input_vals.color[1] for i in range(strip.numPixels())]
     color = input_vals.color[0]
@@ -157,8 +152,6 @@ def shoot(input_vals, pipe):
     
 # rainbow mode function
 def rainbow(input_vals, pipe):
-    print("rainbow")
-
     #values
     interval_min = 1
     interval_max = 30
@@ -196,8 +189,6 @@ def rainbow(input_vals, pipe):
 
 # audio_pegel mode function
 def audio_pegel(input_vals, pipe):
-    print("audio_pegel")
-
     #declared values
     max_blur = 100
     blur = int(input_vals.blur_factor * max_blur)
@@ -231,7 +222,6 @@ def audio_pegel(input_vals, pipe):
 
 # audio_shoot mode function
 def audio_shoot(input_vals, pipe):
-    print("audio_shoot")
     #values
     colors = [input_vals.color[1] for i in range(strip.numPixels())]
     color = input_vals.color[0]
@@ -297,7 +287,6 @@ def audio_shoot(input_vals, pipe):
 
 # audio_brightness mode function
 def audio_brightness(input_vals, pipe):
-    print("audio_brightness")
     #prepare audio
     audio.fade_out = input_vals.fade_out
 
