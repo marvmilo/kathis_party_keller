@@ -27,7 +27,10 @@ def structure(settings):
             ),
             dcc.Location(id = "url"),
             html.Div(
-                children = [],
+                children = [
+                    html.Div(id = "home-trigger"),
+                    dbc.Carousel(id = "home-carousel", items = [])
+                ],
                 style = {"display": "none"}
             )
         ]
