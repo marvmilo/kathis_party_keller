@@ -15,8 +15,7 @@ def callback(trigger):
         for i, pic in enumerate(pics):
             item = {
                 "key": str(i), 
-                "src": f"{path}/{pic}",
-                "header": pic[:-4].strip()
+                "src": f"{path}/{pic}"
             }
             items.append(item)
         return [items]

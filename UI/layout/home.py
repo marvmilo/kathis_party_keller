@@ -1,4 +1,5 @@
 from dash import html
+from dash import dcc
 import dash_bootstrap_components as dbc
 import marvmiloTools as mmt
 
@@ -6,22 +7,46 @@ import marvmiloTools as mmt
 def content():
     return html.Div(
         children = [
-            html.Br(),
             html.Div(
                 html.H1(html.B("Kathis Party Keller")),
                 style = mmt.dash.flex_style()
             ),
             html.Br(),
             html.Div(
-                dbc.Carousel(
-                    items = [
-                        {"key": "1", "src": "/assets/loading_carousel.jpg"}
+                html.Div(
+                    children = [
+                        dbc.Carousel(
+                            items = [
+                                {"key": "1", "src": "/assets/loading_carousel.jpg"}
+                            ],
+                            id = "home-carousel",
+                            indicators = False,
+                            style = {
+                                "width": "100%",
+                                "maxWidth": "30rem",
+                                "padding": "1rem"
+                            }
+                        ),
+                        html.Div(
+                            html.H1(
+                                "-",
+                                id = "home-polaroid-date"
+                            ),
+                            style = mmt.dash.flex_style(
+                                {
+                                    "color": "black",
+                                    "padding-bottom": "1rem",
+                                    "fontFamily": "'Permanent Marker', cursive"
+                                }
+                            )
+                        ),
+                        dcc.Interval(
+                            id = "home-polaroid-interval"
+                        )
                     ],
-                    id = "home-carousel",
-                    indicators = False,
                     style = {
-                        "width": "100%",
-                        "maxWidth": "30rem"
+                        "backgroundColor": "white",
+                        "box-shadow": "10px 10px 5px #111111"
                     }
                 ),
                 style = mmt.dash.flex_style()

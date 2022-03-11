@@ -4,6 +4,7 @@ from dash.dependencies import Input, Output, State
 #import other scirpts
 from . import location
 from . import c1
+from . import c2
 
 def init(app, layout):
     #navbar toggler callback
@@ -26,3 +27,15 @@ def init(app, layout):
     )
     def callback1(trigger):
         return c1.callback(trigger)
+    
+    #update polaroid date
+    @app.callback(
+        [Output("home-polaroid-date", "children"),
+         Output("home-polaroid-interval", "disabled")],
+        [Input("home-carousel", "active_index"),
+         Input("home-polaroid-interval", "n_intervals")],
+        [State("home-polaroid-date", "children"),
+         State("home-carousel", "items")]
+    )
+    def callback2(active, interval, current_date, items):
+        return c2.callback(active, interval, current_date, items)
