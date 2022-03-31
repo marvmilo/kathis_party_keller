@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 180" style="background: #222222">
+    <style>
+        .default{font:1rem sans-serif;fill:white}
+    </style>
+    <text x="160" y="85" class="default" text-anchor="middle">
+        Der Pizza Karton + Messer
+    </text>
+    <text x="160" y="105" class="default" text-anchor="middle">
+        ist keine Dartscheibe.
+    </text>
+</svg>

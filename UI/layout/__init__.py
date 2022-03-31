@@ -31,6 +31,7 @@ def structure(settings):
                     html.Div(id = "home-trigger"),
                     html.H1(id = "home-polaroid-date"),
                     dbc.Carousel(id = "home-carousel", items = []),
+                    dbc.Carousel(id = "home-rules-carousel", items = []),
                     dcc.Interval(id = "home-polaroid-interval", disabled = True)
                 ],
                 style = {"display": "none"}

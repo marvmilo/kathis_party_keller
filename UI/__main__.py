@@ -6,6 +6,7 @@ import marvmiloTools as mmt
 #import other scripts
 import layout
 import callbacks
+import rules
 
 #declare vals
 settings = mmt.json.load("./settings.json")
@@ -25,6 +26,7 @@ app.scripts.config.serve_locally = True
 auth = dash_auth.BasicAuth(app, mmt.dictionary.toDict(settings.creds))
 app.layout = (layout.structure(settings))
 callbacks.init(app, layout)
+rules.init()
 
 #run web application
 app.run_server(
