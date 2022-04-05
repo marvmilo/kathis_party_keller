@@ -48,7 +48,7 @@ def init(app, layout):
     def callback3(trigger):
         return home.load_rules_svgs.callback(trigger)
     
-    #set led mode
+    #change led mode
     @app.callback(
         [Output("led-single-select", "value"),
          Output("led-two_color-select", "value"),
@@ -57,7 +57,8 @@ def init(app, layout):
          Output("led-rainbow-select", "value"),
          Output("led-audio_pegel-select", "value"),
          Output("led-audio_brightness-select", "value"),
-         Output("led-audio_shoot-select", "value")],
+         Output("led-audio_shoot-select", "value"),
+         Output("led-current-mode", "data")],
         [Input("led-single-select", "value"),
          Input("led-two_color-select", "value"),
          Input("led-pulse-select", "value"),
@@ -65,46 +66,41 @@ def init(app, layout):
          Input("led-rainbow-select", "value"),
          Input("led-audio_pegel-select", "value"),
          Input("led-audio_brightness-select", "value"),
-         Input("led-audio_shoot-select", "value"),
-         Input("led-interval", "n_intervals")]
+         Input("led-audio_shoot-select", "value")],
+        [State("led-current-mode", "data")]
     )
-    def callback4(v0, v1, v2, v3, v4, v5, v6, v7, interval):
-        return led.select_mode.callback(v0, v1, v2, v3, v4, v5, v6, v7, interval)
+    def callback4(v0, v1, v2, v3, v4, v5, v6, v7, current):
+        return led.change_mode.callback(v0, v1, v2, v3, v4, v5, v6, v7, current)
     
-    #set led color
+    #load current values
     @app.callback(
         [Output("led_color_1_picker", "value"),
-         Output("led_color_2_picker", "value")],
-        [Input("led_color_1_picker", "value"),
-         Input("led_color_2_picker", "value"),
-         Input("led-interval", "n_intervals")]
+         Output("led_color_2_picker", "value"),
+         Output("led-blur_factor-slider", "value"),
+         Output("led-interval-slider", "value"),
+         Output("led-fade_out-slider", "value")],
+        [Input("led-trigger", "children")]
     )
-    def callback5(color_1_val, color_2_val, interval):
-        return led.select_color.callback(color_1_val, color_2_val, interval)
+    def callback5(trigger):
+        return led.initial_load.callback(trigger)
     
-    #set led blur factor
+    #set led behavior
     @app.callback(
-        [Output("led-blur_factor-slider", "value")],
-        [Input("led-blur_factor-slider", "value"),
-         Input("led-interval", "n_intervals")]
+        [Output("led-changed-behavior-modal", "is_open")],
+        [Input("led-set-behavior", "n_clicks")],
+        [State("led-single-select", "value"),
+         State("led-two_color-select", "value"),
+         State("led-pulse-select", "value"),
+         State("led-shoot-select", "value"),
+         State("led-rainbow-select", "value"),
+         State("led-audio_pegel-select", "value"),
+         State("led-audio_brightness-select", "value"),
+         State("led-audio_shoot-select", "value"),
+         State("led_color_1_picker", "value"),
+         State("led_color_2_picker", "value"),
+         State("led-blur_factor-slider", "value"),
+         State("led-interval-slider", "value"),
+         State("led-fade_out-slider", "value")]
     )
-    def callback6(value, interval):
-        return led.select_slider.callback(value, interval, "blur_factor")
-    
-    #set led interval
-    @app.callback(
-        [Output("led-interval-slider", "value")],
-        [Input("led-interval-slider", "value"),
-         Input("led-interval", "n_intervals")]
-    )
-    def callback7(value, interval):
-        return led.select_slider.callback(value, interval, "interval")
-    
-    #set led fade_out
-    @app.callback(
-        [Output("led-fade_out-slider", "value")],
-        [Input("led-fade_out-slider", "value"),
-         Input("led-interval", "n_intervals")]
-    )
-    def callback8(value, interval):
-        return led.select_slider.callback(value, interval, "fade_out")
+    def callback6(n_clicks, v0, v1, v2, v3, v4, v5, v6, v7, v8, v9, v10, v11, v12):
+        return led.set_behavior.callback(n_clicks, v0, v1, v2, v3, v4, v5, v6, v7, v8, v9, v10, v11, v12)

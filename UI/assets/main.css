@@ -384,8 +384,8 @@ body {
 .btn-primary:focus,
 .btn-primary.focus {
     color: #fff;
-    background-color: #333;
-    border-color: #333;
+    background-color: #222;
+    border-color: #222;
     -webkit-box-shadow: 0 0 0 0.2rem rgb(85 85 85 / 50%);
     box-shadow: 0 0 0 0.2rem rgb(85 85 85 / 50%);
 }

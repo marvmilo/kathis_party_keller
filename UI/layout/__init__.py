@@ -29,6 +29,7 @@ def structure(settings):
             html.Div(
                 children = [
                     html.Div(id = "home-trigger"),
+                    html.Div(id = "led-trigger"),
                     html.H1(id = "home-polaroid-date"),
                     dbc.Carousel(id = "home-polaroid-carousel", items = []),
                     dbc.Carousel(id = "home-rules-carousel", items = []),
@@ -46,7 +47,10 @@ def structure(settings):
                     dbc.Input(id = "led_color_2_picker"),
                     dcc.Slider(0, 0, id = "led-blur_factor-slider"),
                     dcc.Slider(0, 0, id = "led-interval-slider"),
-                    dcc.Slider(0, 0, id = "led-fade_out-slider")
+                    dcc.Slider(0, 0, id = "led-fade_out-slider"),
+                    dbc.Button(id = "led-set-behavior"),
+                    dcc.Store(id = "led-current-mode"),
+                    dbc.Modal(id = "led-changed-behavior-modal")
                 ],
                 style = {"display": "none"}
             )

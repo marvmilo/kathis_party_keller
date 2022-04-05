@@ -109,6 +109,7 @@ def content():
                     ),
                 ]
             ),
+            dcc.Store(id='led-current-mode'),
             html.Br(),
             html.H2("Preview:"),
             dbc.Progress(
@@ -142,8 +143,39 @@ def content():
             html.Br(),
             html.H2("Fade Out:"),
             slider("led-fade_out-slider"),
+            html.Br(),
+            html.Br(),
+            html.Div(
+                dbc.Button(
+                    "Set LED Behavior!",
+                    id = "led-set-behavior",
+                    style = {
+                        "width": "20rem",
+                        "height": "5rem",
+                        "fontSize": "1.5rem"
+                    }
+                ),
+                style = mmt.dash.flex_style()
+            ),
+            dbc.Modal(
+                children = [
+                    mmt.dash.modal_header_close(
+                        title = "Updated LED!",
+                        close_id = "modal-close",
+                        color = "#222"
+                    ),
+                    dbc.ModalBody("This is modal body")
+                ],
+                id = "led-changed-behavior-modal",
+                centered=True
+            ),
             dcc.Interval(
                 id = "led-interval"
+            ),
+            html.Div(
+                "trigger",
+                id = "led-trigger",
+                style = {"display": "none"}
             )
         ]
     )
