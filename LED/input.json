@@ -1,10 +1,18 @@
 {
-    "mode": "single",
+    "mode": "shoot",
     "color": [
-        [0, 0, 255],
-        [255, 0, 0]
+        [
+            0,
+            0,
+            255
+        ],
+        [
+            255,
+            0,
+            0
+        ]
     ],
-    "blur_factor": 0.5,
-    "interval": 0.5,
-    "fade_out": 0.5
+    "blur_factor": 0.46,
+    "interval": 0.36,
+    "fade_out": 0.32
 }

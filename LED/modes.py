@@ -2,11 +2,14 @@ import threading
 import time
 import rpi_ws281x as led
 
+# import sys
+# sys.setrecursionlimit(100)
+
 #import other scripts
 import audio
 
 # LED strip configuration:
-LED_COUNT      = 150      # Number of LED pixels.
+LED_COUNT      = 125      # Number of LED pixels.
 LED_PIN        = 18      # GPIO pin connected to the pixels (18 uses PWM!).
 #LED_PIN        = 10      # GPIO pin connected to the pixels (10 uses SPI /dev/spidev0.0).
 LED_FREQ_HZ    = 800000  # LED signal frequency in hertz (usually 800khz)
@@ -18,10 +21,6 @@ LED_CHANNEL    = 0       # set to '1' for GPIOs 13, 19, 41, 45 or 53
 #init LED strip
 strip = led.Adafruit_NeoPixel(LED_COUNT, LED_PIN, LED_FREQ_HZ, LED_DMA, LED_INVERT, LED_BRIGHTNESS, LED_CHANNEL)
 strip.begin()
-
-#init pyaudio thread
-audio_thread = audio.Thread()
-audio_thread.start()
 
 # single mode function
 def single(input_vals, pipe):
@@ -40,8 +39,10 @@ def single(input_vals, pipe):
 # two color mode function
 def two_color(input_vals, pipe):
     #values
-    blur_max = 150
+    blur_max = strip.numPixels()
     blur = int(blur_max * input_vals.blur_factor)
+    if not blur:
+        blur = 0.1
     static_area = int((blur_max - blur) / 2)
     
     #set colors
@@ -157,7 +158,6 @@ def rainbow(input_vals, pipe):
     interval_max = 30
     interval = (((interval_max - interval_min) * input_vals.interval) + interval_min)/256
     interval_last = time.time()
-    print(interval)
 
     #rainbowwheel
     def wheel(pos):
@@ -182,6 +182,10 @@ def rainbow(input_vals, pipe):
                     interval_last = time.time()
                     break
         
+            #check for end of thread
+            if pipe.exit:
+                pipe.done = True
+                break
         #check for end of thread
         if pipe.exit:
             pipe.done = True
@@ -192,7 +196,6 @@ def audio_pegel(input_vals, pipe):
     #declared values
     max_blur = 100
     blur = int(input_vals.blur_factor * max_blur)
-    extra_leds = blur*2
 
     #prepare audio
     audio.fade_out = input_vals.fade_out
@@ -205,14 +208,15 @@ def audio_pegel(input_vals, pipe):
 
         #set color
         for i in range(-blur, strip.numPixels()):
-            if i < (leds - blur):
-                strip.setPixelColor(i, led.Color(*input_vals.color[0]))
-            elif i < (leds):
-                blur_factor = (leds - i)/blur
-                color = [int(abs(c1*blur_factor + (c2*(1-blur_factor)))) for c1, c2 in zip(input_vals.color[0], input_vals.color[1])]
-                strip.setPixelColor(i, led.Color(*color))
-            else:
-                strip.setPixelColor(i, led.Color(*input_vals.color[1]))
+            if i >= 0:
+                if i < (leds - blur):
+                    strip.setPixelColor(i, led.Color(*input_vals.color[0]))
+                elif i < (leds):
+                    blur_factor = (leds - i)/blur
+                    color = [int(abs(c1*blur_factor + (c2*(1-blur_factor)))) for c1, c2 in zip(input_vals.color[0], input_vals.color[1])]
+                    strip.setPixelColor(i, led.Color(*color))
+                else:
+                    strip.setPixelColor(i, led.Color(*input_vals.color[1]))
         strip.show()
 
         #check for end of thread

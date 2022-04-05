@@ -19,7 +19,7 @@ def content():
                             items = [
                                 {"key": "1", "src": "/assets/loading_carousel.jpg"}
                             ],
-                            id = "home-carousel",
+                            id = "home-polaroid-carousel",
                             interval = 10 * 1000,
                             indicators = False,
                             style = {
@@ -36,7 +36,7 @@ def content():
                             style = mmt.dash.flex_style(
                                 {
                                     "color": "black",
-                                    "padding-bottom": "1rem",
+                                    "paddingBottom": "1rem",
                                     "fontFamily": "'Permanent Marker', cursive"
                                 }
                             )
@@ -47,23 +47,27 @@ def content():
                     ],
                     style = {
                         "backgroundColor": "white",
-                        "box-shadow": "10px 10px 5px #111111"
+                        "boxShadow": "10px 10px 5px #111111"
                     }
                 ),
-                style = mmt.dash.flex_style()
+                style = mmt.dash.flex_style({"padding": "5%"})
             ),
             html.Br(),html.Br(),
             html.Div(
-                html.H2(html.B("Hunde müssen draußen bleiben!")),
+                html.H2(
+                    html.B("Hunde müssen draußen bleiben!"),
+                    style = {"textAlign": "center"}
+                ),
                 style = mmt.dash.flex_style()
             ),
             html.Div(
-                mmt.dash.picture(
-                    path = "hund.jpg",
-                    aspect_ratio = "1 / 1",
-                    width = "25rem"
+                html.Img(
+                    src='/assets/hund.png',
+                    style = {
+                        "maxWidth": "20rem"
+                    }
                 ),
-                style = mmt.dash.flex_style()
+                style = mmt.dash.flex_style({"maxWidth": "100%"})
             ),
             html.Br(),
             html.Br(),
@@ -88,7 +92,7 @@ def content():
                 style = mmt.dash.flex_style()
             ),
             html.Div(
-                True,
+                "trigger",
                 id = "home-trigger",
                 style = {"display": "none"}
             )

@@ -13,7 +13,7 @@ def structure(settings):
         children = [
             navbar(settings.name, settings.style.logo),
             mmt.dash.content_div(
-                width = "1200px",
+                width = "1000px",
                 padding = "5%",
                 children = [
                     html.Div(
@@ -30,9 +30,23 @@ def structure(settings):
                 children = [
                     html.Div(id = "home-trigger"),
                     html.H1(id = "home-polaroid-date"),
-                    dbc.Carousel(id = "home-carousel", items = []),
+                    dbc.Carousel(id = "home-polaroid-carousel", items = []),
                     dbc.Carousel(id = "home-rules-carousel", items = []),
-                    dcc.Interval(id = "home-polaroid-interval", disabled = True)
+                    dcc.Interval(id = "home-polaroid-interval", disabled = True),
+                    dcc.Interval(id = "led-interval", disabled = True),
+                    dbc.Switch(id = "led-single-select"),
+                    dbc.Switch(id = "led-two_color-select"),
+                    dbc.Switch(id = "led-pulse-select"),
+                    dbc.Switch(id = "led-shoot-select"),
+                    dbc.Switch(id = "led-rainbow-select"),
+                    dbc.Switch(id = "led-audio_pegel-select"),
+                    dbc.Switch(id = "led-audio_brightness-select"),
+                    dbc.Switch(id = "led-audio_shoot-select"),
+                    dbc.Input(id = "led_color_1_picker"),
+                    dbc.Input(id = "led_color_2_picker"),
+                    dcc.Slider(0, 0, id = "led-blur_factor-slider"),
+                    dcc.Slider(0, 0, id = "led-interval-slider"),
+                    dcc.Slider(0, 0, id = "led-fade_out-slider")
                 ],
                 style = {"display": "none"}
             )

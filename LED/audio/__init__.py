@@ -4,7 +4,7 @@ import marvmiloTools as mmt
 import threading
 
 #values
-settings = mmt.json.load("./LED/audio/settings.json")
+settings = mmt.json.load("/home/pi/scripts/LED/audio/settings.json")
 peak = mmt.dictionary.toObj({
     "value": None,
     "last": 0,
@@ -57,47 +57,48 @@ def main():
 
         #flat led noise
         max_change_perc = settings.behaviour.max_change_percentage
-        change_perc = abs(peak.last - peak.value)/peak.range
-        if change_perc > settings.behaviour.skip_percentage:
-            pass
-        elif peak.value > peak.last:
-            peak.value = peak.last * (1+max_change_perc)
-        else:
-            peak.value = peak.last * (1-max_change_perc)
-        
-        #set fade out
-        fade_out_percentage = (settings.behaviour.max_peak_decrease_percentage - settings.behaviour.min_peak_decrease_percentage) * fade_out
-        peak_decrease = peak.range * (settings.behaviour.max_peak_decrease_percentage - fade_out_percentage)
-        if peak.last - peak_decrease > peak.value:
-            peak.value = peak.last - peak_decrease
-        
-        #set values
-        peak.last = peak.value
-        peak.perc = peak.value / peak.range
-        if peak.perc > 1:
-            peak.perc = 1
-        if peak.value < peak.min:
-            peak.perc = 0
-        
-        #display
-        if settings.debug.status:
-            out_str = ""
-            spacing = settings.debug.spacing
-            rounding = settings.debug.rounding
-            total_bars = settings.debug.bars
-            out_str += f"MIN: {round(peak.min, rounding)}".ljust(spacing, " ")
-            out_str += f"MAX: {round(peak.max, rounding)}".ljust(spacing, " ")
-            out_str += f"VALUE: {round(peak.value, rounding)}".ljust(spacing, " ")
-            out_str += f"Percentage: {round(peak.perc*100, rounding)}%".ljust(spacing, " ")
-            if not np.isnan(peak.perc):
-                bar_count = int(total_bars * peak.perc)
+        if peak.range:
+            change_perc = abs(peak.last - peak.value)/peak.range
+            if change_perc > settings.behaviour.skip_percentage:
+                pass
+            elif peak.value > peak.last:
+                peak.value = peak.last * (1+max_change_perc)
             else:
-                bar_count = 0
-            bars = bar_count * settings.debug.bar_symbol
-            empty = (total_bars - bar_count) * " "
-            out_str += f"|{bars}{empty}|".ljust(spacing, " ")
-            print(out_str)
-        percentage = peak.perc
+                peak.value = peak.last * (1-max_change_perc)
+            
+            #set fade out
+            fade_out_percentage = (settings.behaviour.max_peak_decrease_percentage - settings.behaviour.min_peak_decrease_percentage) * fade_out
+            peak_decrease = peak.range * (settings.behaviour.max_peak_decrease_percentage - fade_out_percentage)
+            if peak.last - peak_decrease > peak.value:
+                peak.value = peak.last - peak_decrease
+            
+            #set values
+            peak.last = peak.value
+            peak.perc = peak.value / peak.range
+            if peak.perc > 1:
+                peak.perc = 1
+            if peak.value < peak.min:
+                peak.perc = 0
+            
+            #display
+            if settings.debug.status:
+                out_str = ""
+                spacing = settings.debug.spacing
+                rounding = settings.debug.rounding
+                total_bars = settings.debug.bars
+                out_str += f"MIN: {round(peak.min, rounding)}".ljust(spacing, " ")
+                out_str += f"MAX: {round(peak.max, rounding)}".ljust(spacing, " ")
+                out_str += f"VALUE: {round(peak.value, rounding)}".ljust(spacing, " ")
+                out_str += f"Percentage: {round(peak.perc*100, rounding)}%".ljust(spacing, " ")
+                if not np.isnan(peak.perc):
+                    bar_count = int(total_bars * peak.perc)
+                else:
+                    bar_count = 0
+                bars = bar_count * settings.debug.bar_symbol
+                empty = (total_bars - bar_count) * " "
+                out_str += f"|{bars}{empty}|".ljust(spacing, " ")
+                print(out_str)
+            percentage = peak.perc
 
 #creating thread
 class Thread(threading.Thread):
