@@ -25,6 +25,7 @@ def callback(single_val, two_color_val, pulse_val, shoot_val, rainbow_val, audio
     elif len([s for s in mode_states if mode_states[s]]) >= 2:
         mode_states[current_selected] = False
         current_selected = [s for s in mode_states if mode_states[s]][0]
+        current_active = current_selected
     else:
         raise PreventUpdate
     

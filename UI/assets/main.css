@@ -642,3 +642,11 @@ body {
     height: 4px;
     border-radius: 6px;
 }
+
+.rc-slider-disabled {
+    background-color: transparent;
+}
+
+.rc-slider-mark-text-active {
+    color: #fff;
+}

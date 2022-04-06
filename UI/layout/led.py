@@ -18,22 +18,25 @@ def mode_select_row(name, id):
                 width = "auto"
             ),
             dbc.Col(
-                dbc.Progress(
-                    label = "loading ...",
-                    value = 100,
-                    striped = True,
-                    animated = True,
+                html.Div(
+                    dbc.Progress(
+                        label = "loading ...",
+                        value = 100,
+                        striped = True,
+                        animated = True,
+                        style = {
+                            "height": "2rem",
+                            "width": "100%",
+                            "maxWidth": "25rem",
+                            "minWidth": "15rem"
+                        }
+                    ),
                     style = {
-                        "height": "2rem",
-                        "width": "100%",
-                        "maxWidth": "25rem",
-                        "minWidth": "15rem"
-                    }
-                ),
-                style = {
-                    "display": "flex",
-                    "justify-content": "flex-end"
-                }
+                        "display": "flex",
+                        "justify-content": "flex-end"
+                    },
+                    id = f"{id}-preview"
+                )
             )
         ],
         style = {
@@ -112,39 +115,70 @@ def content():
             dcc.Store(id='led-current-mode'),
             html.Br(),
             html.H2("Preview:"),
-            dbc.Progress(
-                label = "loading ...",
-                value = 100,
-                striped = True,
-                animated = True,
-                style = {"height": "2.5rem"}
+            html.Div(
+                dbc.Progress(
+                    label = "loading ...",
+                    value = 100,
+                    striped = True,
+                    animated = True,
+                    style = {"height": "2.5rem"}
+                ),
+                id = "led-preview"
             ),
-            html.Br(),
-            html.Br(),
             dbc.Row(
                 children = [
                     dbc.Col(
-                        color_picker("Color 1:", id = "led_color_1_picker")
+                        children = [
+                            html.Br(),
+                            html.Br(),
+                            color_picker("Color 1:", id = "led_color_1_picker"),
+                        ],
+                        id = "led-color1-div",
+                        style = {"display": "none"}
                     ),
                     dbc.Col(
-                        color_picker("Color 2:", id = "led_color_2_picker")
+                        children = [
+                            html.Br(),
+                            html.Br(),
+                            color_picker("Color 2:", id = "led_color_2_picker"),
+                        ],
+                        id = "led-color2-div",
+                        style = {"display": "none"}
                     )
                 ]
             ),
             html.Br(),
             html.Br(),
-            html.H2("Blur Factor:"),
-            slider("led-blur_factor-slider"),
-            html.Br(),
-            html.Br(),
-            html.H2("Interval:"),
-            slider("led-interval-slider"),
-            html.Br(),
-            html.Br(),
-            html.H2("Fade Out:"),
-            slider("led-fade_out-slider"),
-            html.Br(),
-            html.Br(),
+            html.Div(
+                children = [
+                    html.H2("Blur Factor:"),
+                    slider("led-blur_factor-slider"),
+                    html.Br(),
+                    html.Br(),
+                ],
+                id = "led-blur_factor-div",
+                style = {"display": "none"}
+            ),
+            html.Div(
+                children = [
+                    html.H2("Interval:"),
+                    slider("led-interval-slider"),
+                    html.Br(),
+                    html.Br(),
+                ],
+                id = "led-interval-div",
+                style = {"display": "none"}
+            ),
+            html.Div(
+                children = [
+                    html.H2("Fade Out:"),
+                    slider("led-fade_out-slider"),
+                    html.Br(),
+                    html.Br(),
+                ],
+                id = "led-fade_out-div",
+                style = {"display": "none"}
+            ),
             html.Div(
                 dbc.Button(
                     "Set LED Behavior!",
@@ -157,20 +191,44 @@ def content():
                 ),
                 style = mmt.dash.flex_style()
             ),
+            html.Br(),
+            html.Br(),
             dbc.Modal(
                 children = [
                     mmt.dash.modal_header_close(
                         title = "Updated LED!",
-                        close_id = "modal-close",
+                        close_id = "led-changed-behavior-modal-close",
                         color = "#222"
                     ),
-                    dbc.ModalBody("This is modal body")
+                    dbc.ModalBody(
+                        children = [
+                            html.Br(),
+                            html.Div(
+                                "Set LED Behavior to current Input Settings.",
+                                style = mmt.dash.flex_style({"textAlign": "center"})
+                            ),
+                            html.Br(),
+                            html.Div(
+                                dbc.Button(
+                                    "OK",
+                                    id = "led-changed-behavior-modal-ok",
+                                    style = {
+                                        "width": "10rem",
+                                        "height": "3rem"
+                                    }
+                                ),
+                                style = mmt.dash.flex_style()
+                            ),
+                            html.Br()
+                        ]
+                    )
                 ],
                 id = "led-changed-behavior-modal",
                 centered=True
             ),
             dcc.Interval(
-                id = "led-interval"
+                id = "led-interval",
+                interval = 500
             ),
             html.Div(
                 "trigger",

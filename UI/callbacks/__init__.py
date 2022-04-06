@@ -86,8 +86,11 @@ def init(app, layout):
     
     #set led behavior
     @app.callback(
-        [Output("led-changed-behavior-modal", "is_open")],
-        [Input("led-set-behavior", "n_clicks")],
+        [Output("led-changed-behavior-modal", "is_open"),
+         Output("led-set-behavior", "n_clicks")],
+        [Input("led-set-behavior", "n_clicks"),
+         Input("led-changed-behavior-modal-close", "n_clicks"),
+         Input("led-changed-behavior-modal-ok", "n_clicks")],
         [State("led-single-select", "value"),
          State("led-two_color-select", "value"),
          State("led-pulse-select", "value"),
@@ -102,5 +105,53 @@ def init(app, layout):
          State("led-interval-slider", "value"),
          State("led-fade_out-slider", "value")]
     )
-    def callback6(n_clicks, v0, v1, v2, v3, v4, v5, v6, v7, v8, v9, v10, v11, v12):
-        return led.set_behavior.callback(n_clicks, v0, v1, v2, v3, v4, v5, v6, v7, v8, v9, v10, v11, v12)
+    def callback6(n_set, n_close, n_ok, v0, v1, v2, v3, v4, v5, v6, v7, v8, v9, v10, v11, v12):
+        return led.set_behavior.callback(n_set, n_close, n_ok, v0, v1, v2, v3, v4, v5, v6, v7, v8, v9, v10, v11, v12)
+
+    #block input for specific mode
+    @app.callback(
+        [Output("led-color1-div", "style"),
+         Output("led-color2-div", "style"),
+         Output("led-blur_factor-div", "style"),
+         Output("led-interval-div", "style"),
+         Output("led-fade_out-div", "style"),],
+        [Input("led-single-select", "value"),
+         Input("led-two_color-select", "value"),
+         Input("led-pulse-select", "value"),
+         Input("led-shoot-select", "value"),
+         Input("led-rainbow-select", "value"),
+         Input("led-audio_pegel-select", "value"),
+         Input("led-audio_brightness-select", "value"),
+         Input("led-audio_shoot-select", "value"),
+         Input("led-trigger", "children")]
+    )
+    def callback7(v0, v1, v2, v3, v4, v5, v6, v7, trigger):
+        return led.disable_input.callback(v0, v1, v2, v3, v4, v5, v6, v7, trigger)
+    
+    #rende previews
+    @app.callback(
+        [Output("led-single-select-preview", "children"),
+         Output("led-two_color-select-preview", "children"),
+         Output("led-pulse-select-preview", "children"),
+         Output("led-shoot-select-preview", "children"),
+         Output("led-rainbow-select-preview", "children"),
+         Output("led-audio_pegel-select-preview", "children"),
+         Output("led-audio_brightness-select-preview", "children"),
+         Output("led-audio_shoot-select-preview", "children")],
+        [Input("led-single-select", "value"),
+         Input("led-two_color-select", "value"),
+         Input("led-pulse-select", "value"),
+         Input("led-shoot-select", "value"),
+         Input("led-rainbow-select", "value"),
+         Input("led-audio_pegel-select", "value"),
+         Input("led-audio_brightness-select", "value"),
+         Input("led-audio_shoot-select", "value"),
+         Input("led_color_1_picker", "value"),
+         Input("led_color_2_picker", "value"),
+         Input("led-blur_factor-slider", "value"),
+         Input("led-interval-slider", "value"),
+         Input("led-fade_out-slider", "value"),
+         Input("led-interval", "n_intervals")]
+    )
+    def callback8(v0, v1, v2, v3, v4, v5, v6, v7, v8, v9, v10, v11, v12, interval):
+        return led.show_preview.callback(v0, v1, v2, v3, v4, v5, v6, v7, v8, v9, v10, v11, v12, interval)

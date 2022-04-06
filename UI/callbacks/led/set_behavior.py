@@ -2,8 +2,8 @@ from dash.exceptions import PreventUpdate
 import marvmiloTools as mmt
 import colormap
 
-def callback(n_clicks, m1, m2, m3, m4, m5, m6, m7, m8, c1, c2, blur_factor, interval, fade_out):
-    if n_clicks:
+def callback(n_set, n_close, n_ok, m1, m2, m3, m4, m5, m6, m7, m8, c1, c2, blur_factor, interval, fade_out):
+    if n_set:
         mode_states = {
             "single": m1,
             "two_color": m2,
@@ -28,6 +28,6 @@ def callback(n_clicks, m1, m2, m3, m4, m5, m6, m7, m8, c1, c2, blur_factor, inte
         }
         mmt.json.save(input_file, filename = "/home/pi/scripts/LED/input.json")
         
-        return [True]
+        return [True, 0]
     else:
-        raise PreventUpdate
+        return [False, 0]
