@@ -25,7 +25,7 @@ def structure(settings):
                     )
                 ]
             ),
-            dcc.Location(id = "url"),
+            dcc.Location(id = "url", refresh = False),
             html.Div(
                 children = [
                     html.Div(id = "home-trigger"),

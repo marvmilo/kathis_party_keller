@@ -2,10 +2,11 @@ from click import progressbar
 from dash.exceptions import PreventUpdate
 import marvmiloTools as mmt
 import colormap
+import os
 
 from . import previews
 
-def callback(m1, m2, m3, m4, m5, m6, m7, m8, c1, c2, blur_factor, interval, fade_out, i):
+def callback(m1, m2, m3, m4, m5, m6, m7, m8, c1, c2, blur_factor, interval, fade_out):
     mode_states = {
         "single": m1,
         "two_color": m2,
@@ -28,17 +29,16 @@ def callback(m1, m2, m3, m4, m5, m6, m7, m8, c1, c2, blur_factor, interval, fade
         "fade_out": fade_out/100
     })
     
-    max_frames = 30
-    try:
-        i = i % max_frames
-    except TypeError:
-        raise PreventUpdate
+    #cleanoup old gifs
+    path = "./assets/previews"
+    for file in os.listdir("./assets/previews"):
+        os.remove(f"{path}/{file}")
     
     return [
-        previews.functions["single"](input_vals, i, max_frames),
-        previews.functions["two_color"](input_vals, i, max_frames),
-        previews.functions["pulse"](input_vals, i, max_frames),
-        None,
+        previews.functions["single"](input_vals),
+        previews.functions["two_color"](input_vals),
+        previews.functions["pulse"](input_vals),
+        previews.functions["shoot"](input_vals),
         None,
         None,
         None,

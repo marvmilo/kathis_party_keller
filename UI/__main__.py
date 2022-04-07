@@ -32,5 +32,6 @@ rules.init()
 app.run_server(
     debug = settings.debug, 
     host = "0.0.0.0",
-    port = settings.port
+    port = settings.port,
+    dev_tools_hot_reload = False
 )

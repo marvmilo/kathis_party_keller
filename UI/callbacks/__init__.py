@@ -150,8 +150,7 @@ def init(app, layout):
          Input("led_color_2_picker", "value"),
          Input("led-blur_factor-slider", "value"),
          Input("led-interval-slider", "value"),
-         Input("led-fade_out-slider", "value"),
-         Input("led-interval", "n_intervals")]
+         Input("led-fade_out-slider", "value")]
     )
-    def callback8(v0, v1, v2, v3, v4, v5, v6, v7, v8, v9, v10, v11, v12, interval):
-        return led.show_preview.callback(v0, v1, v2, v3, v4, v5, v6, v7, v8, v9, v10, v11, v12, interval)
+    def callback8(v0, v1, v2, v3, v4, v5, v6, v7, v8, v9, v10, v11, v12):
+        return led.show_preview.callback(v0, v1, v2, v3, v4, v5, v6, v7, v8, v9, v10, v11, v12)
