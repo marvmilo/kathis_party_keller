@@ -30,20 +30,27 @@ class Frame:
         self.gradient_palette.append(tuple(rgb_color))
         self.phases.append(phase_size)
     
-    def gradient(self, blur_factor):
+    def gradient(self, blur_factor, connect_ends = False):
         for c, color in enumerate(self.gradient_palette):
-            try:
-                next_color = self.gradient_palette[c+1]
-            except IndexError:
-                next_color = None
             
-            try:
-                previous_color = self.gradient_palette[c-1]
-            except IndexError:
-                previous_color = None
-                
+            if connect_ends and c == len(self.gradient_palette) - 1:
+                next_color = self.gradient_palette[0]
+            else:
+                try:
+                    next_color = self.gradient_palette[c+1]
+                except IndexError:
+                    next_color = None
             
             if not c:
+                if connect_ends:
+                    previous_color = self.gradient_palette[c-1]
+                else:
+                    previous_color = None
+            else:
+                previous_color = self.gradient_palette[c-1]
+                
+            
+            if not previous_color:
                 x_range = int(self.phases[c] * self.width)
                 blur_range = int(x_range * blur_factor)
                 if not blur_range:
@@ -57,7 +64,7 @@ class Frame:
                         self.draw.line([(x, self.region.min.y), (x, self.region.max.y)], fill=mixed_color)
             
             elif not next_color:
-                x_range = int(self.phases[c] * self.width)
+                x_range = int(self.phases[c] * self.width) + 1
                 blur_range = int(x_range * blur_factor)
                 offset = int(sum(self.phases[:c] * self.width))
                 if not blur_range:
@@ -91,6 +98,14 @@ class Frame:
     def fill(self, color):
         color = tuple(color)
         self.image.paste(color, [0,0,self.image.size[0],self.image.size[1]])
+    
+    def move_right(self, pixels):
+        left = self.image.crop((0, 0, self.width - pixels, self.height))
+        right = self.image.crop((self.width - pixels, 0, self.width, self.height))
+        self.image = Image.new("RGB", (left.width + right.width, left.height))
+        self.image.paste(right, (0,0))
+        self.image.paste(left, (right.width, 0))
+        self.image.save("moved_picture.jpg")
     
     def save(self, path):
         self.image.save(path)

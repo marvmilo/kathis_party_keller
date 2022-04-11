@@ -69,9 +69,10 @@ def pulse(input_vals):
             
 
 def shoot(input_vals):
-    pass
     path = __path__("gif")
     step_width = input_vals.interval
+    if not step_width:
+        step_width = 0.01
     colors = list()
     phases = list()
     c1 = input_vals.color[0]
@@ -93,30 +94,48 @@ def shoot(input_vals):
         if n >= 1:
             break
     
-    def create_frame(colors, phases):
-        frame = gif.Frame()
-        for i in range(len(colors)):
-            frame.add_gradient_color(colors[i], phases[i])
-        frame.gradient(input_vals.blur_factor)
+    if step_width == 1:
+        colors.append(c2)
+        phases.append(0)
+        
+    gif_file = gif.Gif()
+    frame = gif.Frame()
+    for i in range(len(colors)):
+        frame.add_gradient_color(colors[i], phases[i])
+    frame.gradient(input_vals.blur_factor, connect_ends = True)
+    gif_file.add_frame(frame.image)
+    
+    max_chunks = 150
+    try:
+        speed = int(frame.width / (max_chunks * (1-input_vals.fade_out)))
+    except ZeroDivisionError:
+        speed = max_chunks
+    for i in range(0, frame.width, speed):
+        frame.move_right(speed)
         gif_file.add_frame(frame.image)
-    create_frame(colors, phases)
-    
-    phases.insert(0, 0.01)
-    phases[-1] -= 0.01
-    if colors[0] == c1:
-        colors.insert(0, c2)
-    else:
-        colors.insert(0, c1)
-    create_frame(colors, phases)
-    
-    for i in range(int(step_width/0.01)):
-        phases[0] += 0.01
-        phases[-1] -= 0.01
-        phases = [p if p > 0 else 0 for p in phases]
-        create_frame(colors, phases)
-    
+        
     gif_file.save(path)
-    return __return__(path)      
+    return __return__(path)  
+
+
+def rainbow(input_vals):
+    path = __path__("gif")
+    colors = [
+        [255, 0, 0],
+        [255, 255, 0],
+        [0, 255, 0],
+        [0, 255, 255],
+        [0, 0, 255],
+        [255, 0, 255],
+    ]
+    
+    frame = gif.Frame()
+    for c in colors:
+        frame.add_gradient_color(c, 1/len(colors))
+    frame.gradient(input_vals.blur_factor, connect_ends = True)
+    
+    frame.save(path)
+    return __return__(path)
     
 
 functions = {
@@ -124,4 +143,5 @@ functions = {
     "two_color": two_color,
     "pulse": pulse,
     "shoot": shoot,
+    "rainbow": rainbow,
 }
