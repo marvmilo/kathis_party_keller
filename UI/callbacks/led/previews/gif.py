@@ -19,20 +19,30 @@ class Frame:
     def __init__(self):
         self.gradient_palette = []
         self.phases = []
-        self.region = Rect(0, 0 , 300, 50)
-        self.width = self.region.max.x
+        self.overhang = 0
+        self.__init__image__()
+    
+    def __init__image__(self, overhang = 0, set_width = True):
+        self.region = Rect(0, 0 , 300 + overhang, 50)
+        self.overhang_width = self.region.max.x
         self.height = self.region.max.y
-        self.image = Image.new("RGB", (self.width, self.height), (255, 255, 255))
+        self.image = Image.new("RGB", (self.region.max.x, self.region.max.y), (255, 255, 255))
         self.draw = ImageDraw.Draw(self.image)
+        if set_width:
+            self.width = self.region.max.x
         
     #add gradient color to Image
     def add_gradient_color(self, rgb_color, phase_size):
         self.gradient_palette.append(tuple(rgb_color))
         self.phases.append(phase_size)
+        if sum(self.phases) > 1:
+            self.overhang = int((sum(self.phases)-1)*self.width)
     
     def gradient(self, blur_factor, connect_ends = False):
+        if self.overhang:
+            self.__init__image__(self.overhang, set_width = False)
+        
         for c, color in enumerate(self.gradient_palette):
-            
             if connect_ends and c == len(self.gradient_palette) - 1:
                 next_color = self.gradient_palette[0]
             else:
@@ -100,15 +110,19 @@ class Frame:
         self.image.paste(color, [0,0,self.image.size[0],self.image.size[1]])
     
     def move_right(self, pixels):
-        left = self.image.crop((0, 0, self.width - pixels, self.height))
-        right = self.image.crop((self.width - pixels, 0, self.width, self.height))
+        left = self.image.crop((0, 0, self.overhang_width - pixels, self.height))
+        right = self.image.crop((self.overhang_width - pixels, 0, self.overhang_width, self.height))
         self.image = Image.new("RGB", (left.width + right.width, left.height))
         self.image.paste(right, (0,0))
         self.image.paste(left, (right.width, 0))
         self.image.save("moved_picture.jpg")
     
+    def get_image(self):
+        return self.image.crop((0, 0, self.width, self.height))
+    
     def save(self, path):
-        self.image.save(path)
+        image = self.get_image()
+        image.save(path)
         
 class Gif:
     def __init__(self):

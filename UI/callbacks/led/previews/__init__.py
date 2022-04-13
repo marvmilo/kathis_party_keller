@@ -61,7 +61,7 @@ def pulse(input_vals):
         mixed_color = [int(c1 * (1-blur) + c2 * blur) for c1, c2 in zip(*input_vals.color)]
         frame = gif.Frame()
         frame.fill(mixed_color)
-        gif_file.add_frame(frame.image)
+        gif_file.add_frame(frame.get_image())
     
     gif_file.save(path)
     
@@ -96,24 +96,23 @@ def shoot(input_vals):
     
     if step_width == 1:
         colors.append(c2)
-        phases.append(0)
+        phases.append(1)
         
     gif_file = gif.Gif()
     frame = gif.Frame()
     for i in range(len(colors)):
         frame.add_gradient_color(colors[i], phases[i])
     frame.gradient(input_vals.blur_factor, connect_ends = True)
-    gif_file.add_frame(frame.image)
+    gif_file.add_frame(frame.get_image())
     
-    max_chunks = 150
-    try:
-        speed = int(frame.width / (max_chunks * (1-input_vals.fade_out)))
-    except ZeroDivisionError:
-        speed = max_chunks
-    for i in range(0, frame.width, speed):
+    max_speed = 25
+    speed = int(max_speed * input_vals.fade_out)
+    if not speed:
+        speed = 1
+    for i in range(0, frame.overhang_width, speed):
         frame.move_right(speed)
-        gif_file.add_frame(frame.image)
-        
+        gif_file.add_frame(frame.get_image())
+    
     gif_file.save(path)
     return __return__(path)  
 
@@ -129,12 +128,21 @@ def rainbow(input_vals):
         [255, 0, 255],
     ]
     
+    gif_file = gif.Gif()
     frame = gif.Frame()
     for c in colors:
         frame.add_gradient_color(c, 1/len(colors))
     frame.gradient(input_vals.blur_factor, connect_ends = True)
     
-    frame.save(path)
+    max_speed = 5
+    speed = int(max_speed * input_vals.interval)
+    if not speed:
+        speed = 1
+    for i in range(0, frame.width, speed):
+        frame.move_right(speed)
+        gif_file.add_frame(frame.get_image())
+    
+    gif_file.save(path)
     return __return__(path)
     
 
