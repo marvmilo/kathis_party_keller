@@ -38,7 +38,7 @@ class Frame:
         if sum(self.phases) > 1:
             self.overhang = int((sum(self.phases)-1)*self.width)
     
-    def gradient(self, blur_factor, connect_ends = False):
+    def gradient(self, blur_factor, connect_ends = False, hard_right = False):
         if self.overhang:
             self.__init__image__(self.overhang, set_width = False)
         
@@ -59,9 +59,16 @@ class Frame:
             else:
                 previous_color = self.gradient_palette[c-1]
                 
-            
+                
+            try:
+                hard_right = tuple(hard_right)
+            except TypeError:
+                hard_right = False
+            if previous_color == hard_right:
+                previous_color = color
+                
             if not previous_color:
-                x_range = int(self.phases[c] * self.width)
+                x_range = int(self.phases[c] * self.width) + 2
                 blur_range = int(x_range * blur_factor)
                 if not blur_range:
                     blur_range = 1
@@ -73,8 +80,8 @@ class Frame:
                         mixed_color = tuple([int(c1 * (1-blur) + c2 * blur) for c1, c2 in zip(color, next_color)])
                         self.draw.line([(x, self.region.min.y), (x, self.region.max.y)], fill=mixed_color)
             
-            elif not next_color:
-                x_range = int(self.phases[c] * self.width) + 1
+            elif not next_color or hard_right == color:
+                x_range = int(self.phases[c] * self.width) + 2
                 blur_range = int(x_range * blur_factor)
                 offset = int(sum(self.phases[:c] * self.width))
                 if not blur_range:

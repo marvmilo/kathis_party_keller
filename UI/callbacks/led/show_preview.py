@@ -40,9 +40,9 @@ def callback(m1, m2, m3, m4, m5, m6, m7, m8, c1, c2, blur_factor, interval, fade
         previews.functions["pulse"](input_vals),
         previews.functions["shoot"](input_vals),
         previews.functions["rainbow"](input_vals),
-        None,
-        None,
-        None
+        previews.functions["audio_pegel"](input_vals),
+        previews.functions["audio_brightness"](input_vals),
+        previews.functions["audio_shoot"](input_vals),
     ]
     
     raise PreventUpdate

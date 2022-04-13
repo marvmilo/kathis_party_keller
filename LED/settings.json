@@ -16,8 +16,8 @@
     "pulse": {
         "color1": true,
         "color2": true,
-        "blur_factor": [1,10],
-        "interval": false,
+        "blur_factor": false,
+        "interval": [1,10],
         "fade_out": false
     },
     "shoot": {
@@ -45,7 +45,7 @@
         "color1": true,
         "color2": true,
         "blur_factor": [0,10],
-        "interval": false,
+        "interval": [0,10],
         "fade_out": [0, 20]
     },
     "audio_brightness": {

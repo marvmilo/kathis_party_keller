@@ -107,9 +107,15 @@ def shoot(input_vals):
     
     max_speed = 25
     speed = int(max_speed * input_vals.fade_out)
-    if not speed:
+    try:
+        speed = int(frame.overhang_width / int(frame.overhang_width / speed))
+    except ZeroDivisionError:
         speed = 1
+    progress = 0
     for i in range(0, frame.overhang_width, speed):
+        progress += speed
+        if progress >= frame.overhang_width:
+            break
         frame.move_right(speed)
         gif_file.add_frame(frame.get_image())
     
@@ -135,16 +141,149 @@ def rainbow(input_vals):
     frame.gradient(input_vals.blur_factor, connect_ends = True)
     
     max_speed = 5
-    speed = int(max_speed * input_vals.interval)
-    if not speed:
+    speed = int(max_speed * input_vals.fade_out)
+    try:
+        speed = int(frame.overhang_width / int(frame.overhang_width / speed))
+    except ZeroDivisionError:
         speed = 1
-    for i in range(0, frame.width, speed):
+    progress = 0
+    for i in range(0, frame.overhang_width, speed):
+        progress += speed
+        if progress >= frame.overhang_width:
+            break
         frame.move_right(speed)
         gif_file.add_frame(frame.get_image())
     
     gif_file.save(path)
     return __return__(path)
+
+def audio_pegel(input_vals):
+    path = __path__("jpg")
+    gif_file = gif.Gif()
     
+    def add_frame(phases1, phases2):
+        frame = gif.Frame()
+        frame.add_gradient_color(input_vals.color[0], phases1)
+        frame.add_gradient_color(input_vals.color[1], phases2)
+        frame.gradient(blur_factor = input_vals.blur_factor)
+        gif_file.add_frame(frame.get_image())
+        
+    max_speed = 0.5
+    speed = max_speed * input_vals.fade_out
+    if speed < 0.1:
+        speed = 0.1
+    
+    for pegel in [0.5, 1]:
+        add_frame(0,1)
+        add_frame(pegel, 1-pegel)
+        while True:
+            pegel = pegel - speed
+            if pegel > 0:
+                add_frame(pegel, 1-pegel)
+            else:
+                break
+    
+    gif_file.save(path)
+    return __return__(path)
+
+def audio_pegel(input_vals):
+    path = __path__("jpg")
+    gif_file = gif.Gif()
+    frame_width = 300
+    
+    def add_frame(phases1, phases2):
+        nonlocal frame_width
+        frame = gif.Frame()
+        frame.add_gradient_color(input_vals.color[0], phases1)
+        frame.add_gradient_color(input_vals.color[1], phases2)
+        frame.gradient(blur_factor = input_vals.blur_factor)
+        gif_file.add_frame(frame.get_image())
+        frame_width = frame.width
+        
+    max_speed = 0.5
+    speed = max_speed * input_vals.fade_out
+    if speed < 0.1:
+        speed = 0.1
+    
+    for pegel in [0.5, 1]:
+        add_frame(0,1)
+        add_frame(pegel, 1-pegel)
+        while True:
+            pegel = pegel - speed
+            if pegel > 0:
+                add_frame(pegel, 1-pegel)
+            else:
+                break
+    
+    gif_file.save(path)
+    return __return__(path)
+
+def audio_brightness(input_vals):
+    path = __path__("jpg")
+    gif_file = gif.Gif()
+    
+    def add_frame(pegel):
+        frame = gif.Frame()
+        color = [int((c1 * pegel) + (c2 * (1-pegel))) for c1,c2 in zip(input_vals.color[0], input_vals.color[1])]
+        frame.fill(color)
+        gif_file.add_frame(frame.get_image())
+        
+    max_speed = 0.5
+    speed = max_speed * input_vals.fade_out
+    if speed < 0.1:
+        speed = 0.1
+        
+    for pegel in [0.5, 1]:
+        add_frame(0)
+        add_frame(pegel)
+        while True:
+            pegel = pegel - speed
+            if pegel > 0:
+                add_frame(pegel)
+            else:
+                break
+    
+    gif_file.save(path)
+    return __return__(path)
+    
+def audio_shoot(input_vals):
+    path = __path__("gif") 
+    gif_file = gif.Gif()
+    frame = gif.Frame()
+    c1 = input_vals.color[0]
+    c2 = input_vals.color[1]
+    
+    max_interval = 0.3
+    interval = max_interval * input_vals.interval
+    if interval < 0.1:
+        interval = 0.1
+    filler_interval = (1 - (interval * 2))/3
+        
+    frame.add_gradient_color(c1, interval)
+    frame.add_gradient_color(c2, filler_interval*2)
+    frame.add_gradient_color(c1, interval)
+    frame.add_gradient_color(c2, filler_interval)
+    
+    frame.gradient(input_vals.blur_factor, connect_ends = True, hard_right = c1)
+    gif_file.add_frame(frame.get_image())
+    
+    max_speed = 30
+    min_speed = 10
+    speed = int(((max_speed-min_speed) * input_vals.fade_out) + min_speed)
+    try:
+        speed = int(frame.overhang_width / int(frame.overhang_width / speed))
+    except ZeroDivisionError:
+        speed = 1
+    progress = 0
+    for i in range(0, frame.overhang_width, speed):
+        progress += speed
+        if progress >= frame.overhang_width:
+            break
+        frame.move_right(speed)
+        gif_file.add_frame(frame.get_image())
+    
+    gif_file.save(path)
+    return __return__(path)  
 
 functions = {
     "single": single,
@@ -152,4 +291,7 @@ functions = {
     "pulse": pulse,
     "shoot": shoot,
     "rainbow": rainbow,
+    "audio_pegel": audio_pegel,
+    "audio_brightness": audio_brightness,
+    "audio_shoot": audio_shoot
 }
