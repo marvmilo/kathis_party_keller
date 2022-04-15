@@ -19,18 +19,6 @@ def mode_select_row(name, id):
             ),
             dbc.Col(
                 html.Div(
-                    dbc.Progress(
-                        label = "loading ...",
-                        value = 100,
-                        striped = True,
-                        animated = True,
-                        style = {
-                            "height": "2rem",
-                            "width": "100%",
-                            "maxWidth": "25rem",
-                            "minWidth": "15rem"
-                        }
-                    ),
                     style = {
                         "display": "flex",
                         "justify-content": "flex-end"

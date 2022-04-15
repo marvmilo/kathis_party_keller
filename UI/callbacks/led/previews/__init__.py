@@ -1,52 +1,36 @@
 from dash import html
+from dash import dcc
+import dash_bootstrap_components as dbc
+import threading
 import marvmiloTools as mmt
 
 from . import gif
 
-__preview_style__ = {
-    "height": "2rem",
-    "width": "100%",
-    "maxWidth": "25rem",
-    "minWidth": "15rem",
-    "borderRadius": "0.25rem"
-}
-
-def __path__(format):
-    return f"./assets/previews/{mmt.dash.random_ID(32)}.{format}"
-
-
-def __return__(path):
-    return html.Img(
-        src = path,
-        style = __preview_style__
-    )
-
-
-def single(input_vals):
-    path = __path__("jpg")
+input_vals = None
     
+class Thread(threading.Thread):
+    def __init__(self, function, path):
+        threading.Thread.__init__(self)
+        self.function = function
+        self.path = path
+    def run(self):
+        self.function(self.path)
+
+def single(path):
     frame = gif.Frame()
     frame.fill(input_vals.color[0])
     frame.save(path)
-    
-    return __return__(path)
 
 
-def two_color(input_vals):
-    path = __path__("jpg")
-    
+def two_color(path):
     frame = gif.Frame()
     for color in input_vals.color:
         frame.add_gradient_color(color, 0.5)
     frame.gradient(blur_factor = input_vals.blur_factor)
     frame.save(path)
     
-    return __return__(path)
-    
 
-def pulse(input_vals):
-    path = __path__("gif")
-    
+def pulse(path):
     n_frames = int(input_vals.interval * 100)
     if n_frames < 2:
         n_frames = 2
@@ -64,12 +48,9 @@ def pulse(input_vals):
         gif_file.add_frame(frame.get_image())
     
     gif_file.save(path)
-    
-    return __return__(path)
             
 
-def shoot(input_vals):
-    path = __path__("gif")
+def shoot(path):
     step_width = input_vals.interval
     if not step_width:
         step_width = 0.01
@@ -120,11 +101,9 @@ def shoot(input_vals):
         gif_file.add_frame(frame.get_image())
     
     gif_file.save(path)
-    return __return__(path)  
 
 
-def rainbow(input_vals):
-    path = __path__("gif")
+def rainbow(path):
     colors = [
         [255, 0, 0],
         [255, 255, 0],
@@ -155,10 +134,8 @@ def rainbow(input_vals):
         gif_file.add_frame(frame.get_image())
     
     gif_file.save(path)
-    return __return__(path)
 
-def audio_pegel(input_vals):
-    path = __path__("jpg")
+def audio_pegel(path):
     gif_file = gif.Gif()
     
     def add_frame(phases1, phases2):
@@ -184,10 +161,8 @@ def audio_pegel(input_vals):
                 break
     
     gif_file.save(path)
-    return __return__(path)
 
-def audio_pegel(input_vals):
-    path = __path__("jpg")
+def audio_pegel(path):
     gif_file = gif.Gif()
     frame_width = 300
     
@@ -216,10 +191,8 @@ def audio_pegel(input_vals):
                 break
     
     gif_file.save(path)
-    return __return__(path)
-
-def audio_brightness(input_vals):
-    path = __path__("jpg")
+    
+def audio_brightness(path):
     gif_file = gif.Gif()
     
     def add_frame(pegel):
@@ -244,10 +217,8 @@ def audio_brightness(input_vals):
                 break
     
     gif_file.save(path)
-    return __return__(path)
     
-def audio_shoot(input_vals):
-    path = __path__("gif") 
+def audio_shoot(path):
     gif_file = gif.Gif()
     frame = gif.Frame()
     c1 = input_vals.color[0]
@@ -283,9 +254,8 @@ def audio_shoot(input_vals):
         gif_file.add_frame(frame.get_image())
     
     gif_file.save(path)
-    return __return__(path)  
 
-functions = {
+__functions__ = {
     "single": single,
     "two_color": two_color,
     "pulse": pulse,
@@ -295,3 +265,33 @@ functions = {
     "audio_brightness": audio_brightness,
     "audio_shoot": audio_shoot
 }
+
+def apply(func_name):
+    path = f"./assets/previews/{func_name}-{mmt.dash.random_ID(32)}.gif"
+    function = __functions__[func_name]
+    thread = Thread(function, path)
+    thread.start()
+          
+    return html.Div(
+        html.Div(
+            children = [
+                dbc.Progress(
+                    label = "loading ...",
+                    value = 100,
+                    striped = True,
+                    animated = True,
+                    style = {"height": "2rem"}
+                ),
+                dcc.Interval(
+                    id = "led-preview-interval",
+                    interval = 500
+                )
+            ],
+            id = f"led-{func_name}-gif-preview"
+        ),
+        style = {
+            "width": "100%",
+            "maxWidth": "25rem",
+            "minWidth": "15rem"
+        }
+    )

@@ -1,48 +1,32 @@
-from click import progressbar
 from dash.exceptions import PreventUpdate
-import marvmiloTools as mmt
-import colormap
+from dash import html
 import os
 
-from . import previews
+path = "/home/pi/scripts/UI/assets/previews"
+preview_style= {
+    "height": "2rem",
+    "width": "100%",
+    "maxWidth": "25rem",
+    "minWidth": "15rem",
+    "borderRadius": "0.25rem"
+}
 
-def callback(m1, m2, m3, m4, m5, m6, m7, m8, c1, c2, blur_factor, interval, fade_out):
-    mode_states = {
-        "single": m1,
-        "two_color": m2,
-        "pulse": m3,
-        "shoot": m4,
-        "rainbow": m5,
-        "audio_pegel": m6,
-        "audio_brightness": m7,
-        "audio_shoot": m8
-    }
-    mode = [s for s in mode_states if mode_states[s]][0]
-    input_vals = mmt.dictionary.DictObject({
-        "mode": mode,
-        "color": [
-            list(colormap.hex2rgb(c1)),
-            list(colormap.hex2rgb(c2)),
-        ],
-        "blur_factor": blur_factor/100,
-        "interval": interval/100,
-        "fade_out": fade_out/100
-    })
+def image(file_name):
+    return html.Img(
+        src = f"/assets/previews/{file_name}",
+        style = preview_style
+    )
+
+def callback(interval, loading):
+    loaded = {f.split("-")[0]: f for f in os.listdir(path)}
+    modes = ["single", "two_color", "pulse", "shoot", "rainbow", "audio_pegel", "audio_brightness", "audio_shoot"]
+    return_list = []
     
-    #cleanoup old gifs
-    path = "./assets/previews"
-    for file in os.listdir("./assets/previews"):
-        os.remove(f"{path}/{file}")
+    for mode in modes:
+        print(mode)
+        if mode in loaded.keys():
+            return_list.append(image(loaded[mode]))
+        else:
+            return_list.append(loading())
     
-    return [
-        previews.functions["single"](input_vals),
-        previews.functions["two_color"](input_vals),
-        previews.functions["pulse"](input_vals),
-        previews.functions["shoot"](input_vals),
-        previews.functions["rainbow"](input_vals),
-        previews.functions["audio_pegel"](input_vals),
-        previews.functions["audio_brightness"](input_vals),
-        previews.functions["audio_shoot"](input_vals),
-    ]
-    
-    raise PreventUpdate
+    return return_list

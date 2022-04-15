@@ -128,7 +128,7 @@ def init(app, layout):
     def callback7(v0, v1, v2, v3, v4, v5, v6, v7, trigger):
         return led.disable_input.callback(v0, v1, v2, v3, v4, v5, v6, v7, trigger)
     
-    #rende previews
+    #render previews
     @app.callback(
         [Output("led-single-select-preview", "children"),
          Output("led-two_color-select-preview", "children"),
@@ -153,4 +153,19 @@ def init(app, layout):
          Input("led-fade_out-slider", "value")]
     )
     def callback8(v0, v1, v2, v3, v4, v5, v6, v7, v8, v9, v10, v11, v12):
-        return led.show_preview.callback(v0, v1, v2, v3, v4, v5, v6, v7, v8, v9, v10, v11, v12)
+        return led.render_preview.callback(v0, v1, v2, v3, v4, v5, v6, v7, v8, v9, v10, v11, v12)
+    
+    #show previews
+    @app.callback(
+        [Output("led-single-gif-preview", "children"),
+         Output("led-two_color-gif-preview", "children"),
+         Output("led-pulse-gif-preview", "children"),
+         Output("led-shoot-gif-preview", "children"),
+         Output("led-rainbow-gif-preview", "children"),
+         Output("led-audio_pegel-gif-preview", "children"),
+         Output("led-audio_brightness-gif-preview", "children"),
+         Output("led-audio_shoot-gif-preview", "children")],
+        [Input("led-preview-interval", "n_intervals")]
+    )
+    def callback9(interval):
+        return led.show_preview.callback(interval, led.mode_loading_content)

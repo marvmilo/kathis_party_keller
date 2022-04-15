@@ -122,7 +122,6 @@ class Frame:
         self.image = Image.new("RGB", (left.width + right.width, left.height))
         self.image.paste(right, (0,0))
         self.image.paste(left, (right.width, 0))
-        self.image.save("moved_picture.jpg")
     
     def get_image(self):
         return self.image.crop((0, 0, self.width, self.height))
