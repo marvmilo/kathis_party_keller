@@ -7,6 +7,7 @@ from . import initial_load
 from . import disable_input
 from . import render_preview
 from . import show_preview
+from . import cleanup_preview
 
 #mode loading
 def mode_loading_content():
@@ -17,9 +18,5 @@ def mode_loading_content():
             striped = True,
             animated = True,
             style = {"height": "2rem"}
-        ),
-        dcc.Interval(
-            id = "led-preview-interval",
-            interval = 500
         )
     ]

@@ -52,11 +52,11 @@ def structure(settings):
                     html.Div(id = "led-audio_brightness-gif-preview"),
                     html.Div(id = "led-audio_shoot-gif-preview"),
                     html.Div(id = "led-preview"),
+                    html.Div(id = "led-preview-loaded-dummy-out"),
                     html.H1(id = "home-polaroid-date"),
                     dbc.Carousel(id = "home-polaroid-carousel", items = []),
                     dbc.Carousel(id = "home-rules-carousel", items = []),
                     dcc.Interval(id = "home-polaroid-interval", disabled = True),
-                    dcc.Interval(id = "led-interval", disabled = True),
                     dcc.Interval(id = "led-preview-interval", disabled = True),
                     dbc.Switch(id = "led-single-select"),
                     dbc.Switch(id = "led-two_color-select"),
@@ -75,6 +75,8 @@ def structure(settings):
                     dbc.Button(id = "led-changed-behavior-modal-ok"),
                     dbc.Button(id = "led-changed-behavior-modal-close"),
                     dcc.Store(id = "led-current-mode"),
+                    dcc.Store(id = "led-preview-id"),
+                    dcc.Store(id = "led-preview-loaded"),
                     dbc.Modal(id = "led-changed-behavior-modal")
                 ],
                 style = {"display": "none"}

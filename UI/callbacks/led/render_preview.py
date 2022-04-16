@@ -6,7 +6,7 @@ import os
 
 from . import previews
 
-def callback(m1, m2, m3, m4, m5, m6, m7, m8, c1, c2, blur_factor, interval, fade_out):
+def callback(m1, m2, m3, m4, m5, m6, m7, m8, c1, c2, blur_factor, interval, fade_out, id, loading):
     mode_states = {
         "single": m1,
         "two_color": m2,
@@ -30,21 +30,25 @@ def callback(m1, m2, m3, m4, m5, m6, m7, m8, c1, c2, blur_factor, interval, fade
     })
     
     #cleanoup old gifs
-    path = "./assets/previews"
-    for file in os.listdir("./assets/previews"):
+    path = f"./assets/previews/{id}"
+    try:
+        os.mkdir(path)
+    except FileExistsError:
+        pass
+    for file in os.listdir(path):
         os.remove(f"{path}/{file}")
     
     previews.input_vals = input_vals
     
     return [
-        previews.apply("single"),
-        previews.apply("two_color"),
-        previews.apply("pulse"),
-        previews.apply("shoot"),
-        previews.apply("rainbow"),
-        previews.apply("audio_pegel"),
-        previews.apply("audio_brightness"),
-        previews.apply("audio_shoot"),
+        previews.apply("single", loading, id),
+        previews.apply("two_color", loading, id),
+        previews.apply("pulse", loading, id),
+        previews.apply("shoot", loading, id),
+        previews.apply("rainbow", loading, id),
+        previews.apply("audio_pegel", loading, id),
+        previews.apply("audio_brightness", loading, id),
+        previews.apply("audio_shoot", loading, id),
     ]
     
     raise PreventUpdate

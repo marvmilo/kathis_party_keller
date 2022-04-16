@@ -150,10 +150,11 @@ def init(app, layout):
          Input("led_color_2_picker", "value"),
          Input("led-blur_factor-slider", "value"),
          Input("led-interval-slider", "value"),
-         Input("led-fade_out-slider", "value")]
+         Input("led-fade_out-slider", "value")],
+        [State("led-preview-id", "data")]
     )
-    def callback8(v0, v1, v2, v3, v4, v5, v6, v7, v8, v9, v10, v11, v12):
-        return led.render_preview.callback(v0, v1, v2, v3, v4, v5, v6, v7, v8, v9, v10, v11, v12)
+    def callback8(v0, v1, v2, v3, v4, v5, v6, v7, v8, v9, v10, v11, v12, id):
+        return led.render_preview.callback(v0, v1, v2, v3, v4, v5, v6, v7, v8, v9, v10, v11, v12, id, led.mode_loading_content)
     
     #show previews
     @app.callback(
@@ -164,8 +165,19 @@ def init(app, layout):
          Output("led-rainbow-gif-preview", "children"),
          Output("led-audio_pegel-gif-preview", "children"),
          Output("led-audio_brightness-gif-preview", "children"),
-         Output("led-audio_shoot-gif-preview", "children")],
-        [Input("led-preview-interval", "n_intervals")]
+         Output("led-audio_shoot-gif-preview", "children"),
+         Output("led-preview-loaded", "data")],
+        [Input("led-preview-interval", "n_intervals")],
+        [State("led-preview-id", "data")]
     )
-    def callback9(interval):
-        return led.show_preview.callback(interval, led.mode_loading_content)
+    def callback9(interval, id):
+        return led.show_preview.callback(interval, id, led.mode_loading_content)
+    
+    #cleanup preview loading
+    @app.callback(
+        [Output("led-preview-loaded-dummy-out", "children")],
+        [Input("led-preview-loaded", "data")],
+        [State("led-preview-id", "data")]
+    )
+    def callback10(data, id):
+        return led.cleanup_preview.callback(data, id)

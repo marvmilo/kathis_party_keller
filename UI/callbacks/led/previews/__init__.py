@@ -266,27 +266,15 @@ __functions__ = {
     "audio_shoot": audio_shoot
 }
 
-def apply(func_name):
-    path = f"./assets/previews/{func_name}-{mmt.dash.random_ID(32)}.gif"
+def apply(func_name, loading, id):
+    path = f"./assets/previews/{id}/{func_name}-{mmt.dash.random_ID(32)}.gif"
     function = __functions__[func_name]
     thread = Thread(function, path)
     thread.start()
           
     return html.Div(
         html.Div(
-            children = [
-                dbc.Progress(
-                    label = "loading ...",
-                    value = 100,
-                    striped = True,
-                    animated = True,
-                    style = {"height": "2rem"}
-                ),
-                dcc.Interval(
-                    id = "led-preview-interval",
-                    interval = 500
-                )
-            ],
+            children = loading(),
             id = f"led-{func_name}-gif-preview"
         ),
         style = {
