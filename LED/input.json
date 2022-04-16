@@ -1,5 +1,5 @@
 {
-    "mode": "audio_pegel",
+    "mode": "audio_shoot",
     "color": [
         [
             0,
@@ -12,7 +12,7 @@
             0
         ]
     ],
-    "blur_factor": 0.53,
-    "interval": 0.62,
+    "blur_factor": 1.0,
+    "interval": 0.9,
     "fade_out": 0.51
 }

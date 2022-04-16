@@ -104,14 +104,11 @@ def content():
             html.Br(),
             html.H2("Preview:"),
             html.Div(
-                dbc.Progress(
-                    label = "loading ...",
-                    value = 100,
-                    striped = True,
-                    animated = True,
-                    style = {"height": "2.5rem"}
-                ),
-                id = "led-preview"
+                style = {
+                    "display": "flex",
+                    "justify-content": "flex-end"
+                },
+                id = f"led-preview"
             ),
             dbc.Row(
                 children = [
@@ -214,19 +211,21 @@ def content():
                 id = "led-changed-behavior-modal",
                 centered=True
             ),
-            dcc.Interval(
-                id = "led-preview-interval",
-                interval = 1000
+            html.Div(
+                id = "led-preview-interval-div-1",
+                style = {"display": "none"}    
             ),
             dcc.Store(
                 id = "led-preview-id",
                 data = mmt.dash.random_ID(32)
             ),
             dcc.Store(
+                id = "led-previous-preview"
+            ),
+            dcc.Store(
                 id = "led-preview-loaded",
                 data = False
             ),
-            html.Div(id = "led-preview-loaded-dummy-out"),
             html.Div(
                 "trigger",
                 id = "led-trigger",

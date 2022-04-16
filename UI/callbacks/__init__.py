@@ -1,5 +1,7 @@
 import marvmiloTools as mmt
 from dash.dependencies import Input, Output, State
+import shutil
+import os
 
 #import other scirpts
 from . import general
@@ -7,6 +9,11 @@ from . import home
 from . import led
 
 def init(app, layout):
+    #cleanup old files
+    preview_folder = "/home/pi/scripts/UI/assets/previews"
+    shutil.rmtree(preview_folder)
+    os.mkdir(preview_folder)
+    
     #navbar toggler callback
     @app.callback(*mmt.dash.nav.callback_args)
     def cn(n, is_open):
@@ -137,7 +144,10 @@ def init(app, layout):
          Output("led-rainbow-select-preview", "children"),
          Output("led-audio_pegel-select-preview", "children"),
          Output("led-audio_brightness-select-preview", "children"),
-         Output("led-audio_shoot-select-preview", "children")],
+         Output("led-audio_shoot-select-preview", "children"),
+         Output("led-preview", "children"),
+         Output("led-previous-preview", "data"),
+         Output("led-preview-interval-div-2", "children")],
         [Input("led-single-select", "value"),
          Input("led-two_color-select", "value"),
          Input("led-pulse-select", "value"),
@@ -151,10 +161,11 @@ def init(app, layout):
          Input("led-blur_factor-slider", "value"),
          Input("led-interval-slider", "value"),
          Input("led-fade_out-slider", "value")],
-        [State("led-preview-id", "data")]
+        [State("led-preview-id", "data"),
+         State("led-previous-preview", "data")]
     )
-    def callback8(v0, v1, v2, v3, v4, v5, v6, v7, v8, v9, v10, v11, v12, id):
-        return led.render_preview.callback(v0, v1, v2, v3, v4, v5, v6, v7, v8, v9, v10, v11, v12, id, led.mode_loading_content)
+    def callback8(v0, v1, v2, v3, v4, v5, v6, v7, v8, v9, v10, v11, v12, id, last):
+        return led.render_preview.callback(v0, v1, v2, v3, v4, v5, v6, v7, v8, v9, v10, v11, v12, id, last, led.mode_loading_content, led.preview_interval_enabled)
     
     #show previews
     @app.callback(
@@ -166,6 +177,7 @@ def init(app, layout):
          Output("led-audio_pegel-gif-preview", "children"),
          Output("led-audio_brightness-gif-preview", "children"),
          Output("led-audio_shoot-gif-preview", "children"),
+         Output("led-gif-preview", "children"),
          Output("led-preview-loaded", "data")],
         [Input("led-preview-interval", "n_intervals")],
         [State("led-preview-id", "data")]
@@ -175,9 +187,9 @@ def init(app, layout):
     
     #cleanup preview loading
     @app.callback(
-        [Output("led-preview-loaded-dummy-out", "children")],
+        [Output("led-preview-interval-div-1", "children")],
         [Input("led-preview-loaded", "data")],
         [State("led-preview-id", "data")]
     )
     def callback10(data, id):
-        return led.cleanup_preview.callback(data, id)
+        return led.cleanup_preview.callback(data, id, led.preview_interval_disabled)

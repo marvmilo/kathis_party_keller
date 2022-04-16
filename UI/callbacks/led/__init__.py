@@ -1,5 +1,6 @@
 import dash_bootstrap_components as dbc
 from dash import dcc
+from dash import html
 
 from . import change_mode
 from . import set_behavior
@@ -18,5 +19,27 @@ def mode_loading_content():
             striped = True,
             animated = True,
             style = {"height": "2rem"}
+        )
+    ]
+
+#preview interval
+def preview_interval_disabled():
+    return [
+        dcc.Interval(
+            id = "led-preview-interval",
+            interval = 1000,
+            disabled = True
+        )
+    ]
+    
+def preview_interval_enabled():
+    return [
+        html.Div(
+            dcc.Interval(
+                id = "led-preview-interval",
+                interval = 1000,
+                disabled = False
+            ),
+            id = "led-preview-interval-div-2"
         )
     ]

@@ -13,17 +13,34 @@ preview_style= {
     "borderRadius": "0.25rem"
 }
 
-def image(file_name, id):
-    return html.Img(
-        src = f"/assets/previews/{id}/{file_name}",
-        style = preview_style
-    )
+def image(mode, id):
+    if mode == "general":
+        return html.Img(
+            src = f"/assets/previews/{id}/{mode}",
+            style = {
+                "height": "2rem",
+                "width": "100%",
+                "maxWidth": "25rem",
+                "minWidth": "15rem",
+                "borderRadius": "0.25rem"
+            }
+        )
+    else:
+        return html.Img(
+            src = f"/assets/previews/{id}/{mode}",
+            style = {
+                "height": "2rem",
+                "width": "100%",
+                "minWidth": "15rem",
+                "borderRadius": "0.25rem"
+            }
+        )
 
 def callback(interval, id, loading):
     try:
         path = f"/home/pi/scripts/UI/assets/previews/{id}"
         loaded = {f.split("-")[0]: f for f in os.listdir(path)}
-        modes = ["single", "two_color", "pulse", "shoot", "rainbow", "audio_pegel", "audio_brightness", "audio_shoot"]
+        modes = ["single", "two_color", "pulse", "shoot", "rainbow", "audio_pegel", "audio_brightness", "audio_shoot", "general"]
         all_loaded = True
         return_list = []
         

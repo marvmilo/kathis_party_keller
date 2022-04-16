@@ -266,8 +266,29 @@ __functions__ = {
     "audio_shoot": audio_shoot
 }
 
-def apply(func_name, loading, id):
-    path = f"./assets/previews/{id}/{func_name}-{mmt.dash.random_ID(32)}.gif"
+def apply(func_name, loading, id, diff, general = False):
+    if general:
+        html_id = f"led-gif-preview"
+        path = f"./assets/previews/{id}/general-{mmt.dash.random_ID(32)}.gif"
+        style = {
+            "width": "100%",
+            "minWidth": "15rem"
+        }
+    else:
+        html_id = f"led-{func_name}-gif-preview"
+        path = f"./assets/previews/{id}/{func_name}-{mmt.dash.random_ID(32)}.gif"
+        style = {
+            "width": "100%",
+            "maxWidth": "25rem",
+            "minWidth": "15rem"
+        }
+    
+    led_settings = mmt.json.load("/home/pi/scripts/LED/settings.json")[func_name]
+    mode_vals = [k for k, v in led_settings.items() if v]
+    mode_vals = list(set(["color" if v.startswith("color") else v for v in mode_vals]))
+    if not len(set(mode_vals + diff)) == len(mode_vals + diff):
+        print(func_name)
+    
     function = __functions__[func_name]
     thread = Thread(function, path)
     thread.start()
@@ -275,11 +296,7 @@ def apply(func_name, loading, id):
     return html.Div(
         html.Div(
             children = loading(),
-            id = f"led-{func_name}-gif-preview"
+            id = html_id
         ),
-        style = {
-            "width": "100%",
-            "maxWidth": "25rem",
-            "minWidth": "15rem"
-        }
+        style = style
     )

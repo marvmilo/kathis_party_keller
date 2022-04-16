@@ -6,7 +6,17 @@ import os
 
 from . import previews
 
-def callback(m1, m2, m3, m4, m5, m6, m7, m8, c1, c2, blur_factor, interval, fade_out, id, loading):
+def compare(current, last):
+    if not last:
+        return list(current.keys())
+    else:
+        return_list = list()
+        for key in current.keys():
+            if not current[key] == last[key]:
+                return_list.append(key)
+        return return_list
+
+def callback(m1, m2, m3, m4, m5, m6, m7, m8, c1, c2, blur_factor, interval, fade_out, id, last, loading, interval_content):
     mode_states = {
         "single": m1,
         "two_color": m2,
@@ -28,6 +38,7 @@ def callback(m1, m2, m3, m4, m5, m6, m7, m8, c1, c2, blur_factor, interval, fade
         "interval": interval/100,
         "fade_out": fade_out/100
     })
+    diff = compare(input_vals, last)
     
     #cleanoup old gifs
     path = f"./assets/previews/{id}"
@@ -41,14 +52,17 @@ def callback(m1, m2, m3, m4, m5, m6, m7, m8, c1, c2, blur_factor, interval, fade
     previews.input_vals = input_vals
     
     return [
-        previews.apply("single", loading, id),
-        previews.apply("two_color", loading, id),
-        previews.apply("pulse", loading, id),
-        previews.apply("shoot", loading, id),
-        previews.apply("rainbow", loading, id),
-        previews.apply("audio_pegel", loading, id),
-        previews.apply("audio_brightness", loading, id),
-        previews.apply("audio_shoot", loading, id),
+        previews.apply("single", loading, id, diff),
+        previews.apply("two_color", loading, id, diff),
+        previews.apply("pulse", loading, id, diff),
+        previews.apply("shoot", loading, id, diff),
+        previews.apply("rainbow", loading, id, diff),
+        previews.apply("audio_pegel", loading, id, diff),
+        previews.apply("audio_brightness", loading, id, diff),
+        previews.apply("audio_shoot", loading, id, diff),
+        previews.apply(mode, loading, id, diff, general = True),
+        mmt.dictionary.toDict(input_vals),
+        interval_content()
     ]
     
     raise PreventUpdate
