@@ -165,7 +165,7 @@ def init(app, layout):
          State("led-previous-preview", "data")]
     )
     def callback8(v0, v1, v2, v3, v4, v5, v6, v7, v8, v9, v10, v11, v12, id, last):
-        return led.render_preview.callback(v0, v1, v2, v3, v4, v5, v6, v7, v8, v9, v10, v11, v12, id, last, led.mode_loading_content, led.preview_interval_enabled)
+        return led.render_preview.callback(v0, v1, v2, v3, v4, v5, v6, v7, v8, v9, v10, v11, v12, id, last, led.mode_loading_content, led.preview_interval_enabled, led.image)
     
     #show previews
     @app.callback(
@@ -183,7 +183,7 @@ def init(app, layout):
         [State("led-preview-id", "data")]
     )
     def callback9(interval, id):
-        return led.show_preview.callback(interval, id, led.mode_loading_content)
+        return led.show_preview.callback(interval, id, led.mode_loading_content, led.image)
     
     #cleanup preview loading
     @app.callback(

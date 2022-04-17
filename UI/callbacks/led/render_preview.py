@@ -16,7 +16,7 @@ def compare(current, last):
                 return_list.append(key)
         return return_list
 
-def callback(m1, m2, m3, m4, m5, m6, m7, m8, c1, c2, blur_factor, interval, fade_out, id, last, loading, interval_content):
+def callback(m1, m2, m3, m4, m5, m6, m7, m8, c1, c2, blur_factor, interval, fade_out, id, last, loading, interval_content, image):
     mode_states = {
         "single": m1,
         "two_color": m2,
@@ -40,27 +40,25 @@ def callback(m1, m2, m3, m4, m5, m6, m7, m8, c1, c2, blur_factor, interval, fade
     })
     diff = compare(input_vals, last)
     
-    #cleanoup old gifs
+    #create folder
     path = f"./assets/previews/{id}"
     try:
         os.mkdir(path)
     except FileExistsError:
         pass
-    for file in os.listdir(path):
-        os.remove(f"{path}/{file}")
     
     previews.input_vals = input_vals
     
     return [
-        previews.apply("single", loading, id, diff),
-        previews.apply("two_color", loading, id, diff),
-        previews.apply("pulse", loading, id, diff),
-        previews.apply("shoot", loading, id, diff),
-        previews.apply("rainbow", loading, id, diff),
-        previews.apply("audio_pegel", loading, id, diff),
-        previews.apply("audio_brightness", loading, id, diff),
-        previews.apply("audio_shoot", loading, id, diff),
-        previews.apply(mode, loading, id, diff, general = True),
+        previews.apply("single", loading, image, id, diff),
+        previews.apply("two_color", loading, image, id, diff),
+        previews.apply("pulse", loading, image, id, diff),
+        previews.apply("shoot", loading, image, id, diff),
+        previews.apply("rainbow", loading, image, id, diff),
+        previews.apply("audio_pegel", loading, image, id, diff),
+        previews.apply("audio_brightness", loading, image, id, diff),
+        previews.apply("audio_shoot", loading, image, id, diff),
+        previews.apply(mode, loading, image, id, diff, general = True),
         mmt.dictionary.toDict(input_vals),
         interval_content()
     ]

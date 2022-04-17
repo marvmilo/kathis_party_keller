@@ -3,6 +3,7 @@ from dash import dcc
 import dash_bootstrap_components as dbc
 import threading
 import marvmiloTools as mmt
+import os
 
 from . import gif
 
@@ -72,7 +73,7 @@ def shoot(path):
             current_color = c1
         
         n += step_width
-        if n >= 1:
+        if n >= 1 and current_color == c1:
             break
     
     if step_width == 1:
@@ -266,7 +267,7 @@ __functions__ = {
     "audio_shoot": audio_shoot
 }
 
-def apply(func_name, loading, id, diff, general = False):
+def apply(func_name, loading, image, id, diff, general = False):
     if general:
         html_id = f"led-gif-preview"
         path = f"./assets/previews/{id}/general-{mmt.dash.random_ID(32)}.gif"
@@ -283,20 +284,36 @@ def apply(func_name, loading, id, diff, general = False):
             "minWidth": "15rem"
         }
     
+    preview_folder = f"/home/pi/scripts/UI/assets/previews/{id}"
     led_settings = mmt.json.load("/home/pi/scripts/LED/settings.json")[func_name]
     mode_vals = [k for k, v in led_settings.items() if v]
     mode_vals = list(set(["color" if v.startswith("color") else v for v in mode_vals]))
-    if not len(set(mode_vals + diff)) == len(mode_vals + diff):
-        print(func_name)
     
-    function = __functions__[func_name]
-    thread = Thread(function, path)
-    thread.start()
-          
-    return html.Div(
-        html.Div(
-            children = loading(),
-            id = html_id
-        ),
-        style = style
-    )
+    if not len(set(mode_vals + diff)) == len(mode_vals + diff) or general:
+        for file in os.listdir(preview_folder):
+            if general:
+                if file.startswith("general"):
+                    os.remove(f"{preview_folder}/{file}")
+            elif file.startswith(func_name):
+                os.remove(f"{preview_folder}/{file}")
+                
+                
+        function = __functions__[func_name]
+        thread = Thread(function, path)
+        thread.start()
+        
+        return html.Div(
+            html.Div(
+                children = loading(),
+                id = html_id
+            ),
+            style = style
+        )
+    else:
+        return html.Div(
+            html.Div(
+                children = image(func_name, id),
+                id = html_id
+            ),
+            style = style
+        )

@@ -95,7 +95,7 @@ class Frame:
                         self.draw.line([(x, self.region.min.y), (x, self.region.max.y)], fill=mixed_color)
 
             else:
-                x_range = int(self.phases[c] * self.width)+1
+                x_range = int(self.phases[c] * self.width)+2
                 offset = int(sum(self.phases[:c] * self.width))
                 blur_range = int(x_range * blur_factor/2)
                 if not blur_range:

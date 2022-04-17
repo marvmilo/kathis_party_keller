@@ -43,3 +43,27 @@ def preview_interval_enabled():
             id = "led-preview-interval-div-2"
         )
     ]
+    
+#for displaying Gif
+def image(mode, id):
+    if mode == "general":
+        return html.Img(
+            src = f"/assets/previews/{id}/{mode}",
+            style = {
+                "height": "2rem",
+                "width": "100%",
+                "maxWidth": "25rem",
+                "minWidth": "15rem",
+                "borderRadius": "0.25rem"
+            }
+        )
+    else:
+        return html.Img(
+            src = f"/assets/previews/{id}/{mode}",
+            style = {
+                "height": "2rem",
+                "width": "100%",
+                "minWidth": "15rem",
+                "borderRadius": "0.25rem"
+            }
+        )

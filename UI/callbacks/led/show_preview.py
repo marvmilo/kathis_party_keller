@@ -3,40 +3,8 @@ from dash import html
 from PIL import Image
 import PIL
 import os
-import shutil
 
-preview_style= {
-    "height": "2rem",
-    "width": "100%",
-    "maxWidth": "25rem",
-    "minWidth": "15rem",
-    "borderRadius": "0.25rem"
-}
-
-def image(mode, id):
-    if mode == "general":
-        return html.Img(
-            src = f"/assets/previews/{id}/{mode}",
-            style = {
-                "height": "2rem",
-                "width": "100%",
-                "maxWidth": "25rem",
-                "minWidth": "15rem",
-                "borderRadius": "0.25rem"
-            }
-        )
-    else:
-        return html.Img(
-            src = f"/assets/previews/{id}/{mode}",
-            style = {
-                "height": "2rem",
-                "width": "100%",
-                "minWidth": "15rem",
-                "borderRadius": "0.25rem"
-            }
-        )
-
-def callback(interval, id, loading):
+def callback(interval, id, loading, image):
     try:
         path = f"/home/pi/scripts/UI/assets/previews/{id}"
         loaded = {f.split("-")[0]: f for f in os.listdir(path)}
