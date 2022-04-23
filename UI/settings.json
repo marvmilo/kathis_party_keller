@@ -3,9 +3,6 @@
     "style": {
         "logo": "/assets/logo.svg"
     },
-    "creds": {
-        "user": "schnitzel123"
-    },
     "debug": true,
     "port": 80
 }

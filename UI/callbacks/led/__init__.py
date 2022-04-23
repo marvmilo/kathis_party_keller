@@ -9,6 +9,7 @@ from . import disable_input
 from . import render_preview
 from . import show_preview
 from . import cleanup_preview
+from . import accordion_init
 
 #mode loading
 def mode_loading_content():

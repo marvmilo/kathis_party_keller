@@ -25,7 +25,8 @@ def content():
                             style = {
                                 "width": "100%",
                                 "maxWidth": "30rem",
-                                "padding": "1rem"
+                                "padding": "1rem",
+                                "aspectRatio": "1 / 1"
                             }
                         ),
                         html.Div(
@@ -37,7 +38,8 @@ def content():
                                 {
                                     "color": "black",
                                     "paddingBottom": "1rem",
-                                    "fontFamily": "'Permanent Marker', cursive"
+                                    "fontFamily": "'Permanent Marker', cursive",
+                                    "height": "5rem"
                                 }
                             )
                         ),
@@ -47,7 +49,9 @@ def content():
                     ],
                     style = {
                         "backgroundColor": "white",
-                        "boxShadow": "10px 10px 5px #111111"
+                        "boxShadow": "10px 10px 5px #111111",
+                        "width": "100%",
+                        "maxWidth": "30rem"
                     }
                 ),
                 style = mmt.dash.flex_style({"padding": "5%"})

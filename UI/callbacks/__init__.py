@@ -193,3 +193,60 @@ def init(app, layout):
     )
     def callback10(data, id):
         return led.cleanup_preview.callback(data, id, led.preview_interval_disabled)
+    
+    #pop up shutdown modal
+    @app.callback(
+        [Output("shutdown-modal", "is_open"),
+         Output("shutdown-button", "n_clicks")],
+        [Input("shutdown-button", "n_clicks"),
+         Input("shutdown-modal-close", "n_clicks"),
+         Input("shutdown-modal-yes", "n_clicks"),
+         Input("shutdown-modal-no", "n_clicks")]
+    )
+    def callback11(n_shutdown, n_close, n_yes, n_no):
+        return general.shutdown_modal.callback(n_shutdown, n_close, n_yes, n_no)
+    
+    #pop up shutting down modal
+    @app.callback(
+        [Output("shutting-down-modal", "is_open")],
+        [Input("shutdown-modal-yes", "n_clicks")]
+    )
+    def callback12(n_clicks):
+        return general.shutting_down_modal.callback(n_clicks)
+    
+    #shutdown
+    @app.callback(
+        [Output("shutdown-dummy", "children")],
+        [Input("shutting-down-modal", "is_open")]
+    )
+    def callback13(is_open):
+        return general.shutdown.callback(is_open)
+    
+    #turn on/off light
+    @app.callback(
+        [Output("light-button", "color"),
+         Output("light-button", "n_clicks")],
+        [Input("light-button", "n_clicks"),
+         Input("light-interval", "n_intervals"),
+         Input("session-id", "data")]
+    )
+    def callback14(n_clicks, n_intervals, id):
+        return general.light.callback(n_clicks, n_intervals, id)
+
+    #init accordion item
+    @app.callback(
+        [Output("led-accordion", "active_item")],
+        [Input("led-trigger", "children")]
+    )
+    def callback15(trigger):
+        return led.accordion_init.callback(trigger)
+    
+    #pop up interaction denied modal
+    @app.callback(
+        [Output("interaction-denied-modal", "is_open")],
+        [Input("shutdown-button", "n_clicks"),
+         Input("interaction-denied-modal-close")],
+        [State("interaction-denied-modal", "is_open")]
+    )
+    def callback16(n_shutdown, n_close, is_open):
+        return general.interaction_denied.callback(n_shutdown, n_close, is_open)

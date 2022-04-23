@@ -29,4 +29,5 @@ def callback(single_val, two_color_val, pulse_val, shoot_val, rainbow_val, audio
     else:
         raise PreventUpdate
     
+    mode_states = {k:(False if not v else True) for k,v in mode_states.items()}
     return [*list(mode_states.values()), current_selected]

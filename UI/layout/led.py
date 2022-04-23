@@ -21,7 +21,7 @@ def mode_select_row(name, id):
                 html.Div(
                     style = {
                         "display": "flex",
-                        "justify-content": "flex-end"
+                        "justifyContent": "flex-end"
                     },
                     id = f"{id}-preview"
                 )
@@ -45,7 +45,7 @@ def color_picker(name, id):
                     type = "color",
                     id = id,
                     style = {
-                        "width": "10rem",
+                        "width": "9.5rem",
                         "height": "5rem"
                     }
                 ),
@@ -81,6 +81,7 @@ def content():
                             mode_select_row("Two Color", "led-two_color-select")
                         ],
                         title="Static",
+                        item_id = 0
                     ),
                     dbc.AccordionItem(
                         [
@@ -89,6 +90,7 @@ def content():
                             mode_select_row("Rainbow", "led-rainbow-select")
                         ],
                         title="Animation",
+                        item_id = 1
                     ),
                     dbc.AccordionItem(
                         [
@@ -97,8 +99,10 @@ def content():
                             mode_select_row("Shoot", "led-audio_shoot-select"),
                         ],
                         title="Audio",
+                        item_id = 2
                     ),
-                ]
+                ],
+                id = "led-accordion"
             ),
             dcc.Store(id='led-current-mode'),
             html.Br(),
@@ -106,7 +110,7 @@ def content():
             html.Div(
                 style = {
                     "display": "flex",
-                    "justify-content": "flex-end"
+                    "justifyContent": "flex-end"
                 },
                 id = f"led-preview"
             ),

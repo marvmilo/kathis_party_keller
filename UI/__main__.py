@@ -9,7 +9,9 @@ import callbacks
 import rules
 
 #declare vals
-settings = mmt.json.load("./settings.json")
+settings = mmt.json.load("/home/pi/scripts/UI/settings.json")
+credentials = mmt.json.load("/home/pi/scripts/UI/credentials.json")
+user_pw_dict = {u.name:u.pw for u in credentials.values()}
 
 #init app
 app = dash.Dash(
@@ -23,7 +25,7 @@ app = dash.Dash(
 )
 app.css.config.serve_locally = True
 app.scripts.config.serve_locally = True
-auth = dash_auth.BasicAuth(app, mmt.dictionary.toDict(settings.creds))
+auth = dash_auth.BasicAuth(app, user_pw_dict)
 app.layout = (layout.structure(settings))
 callbacks.init(app, layout)
 rules.init()
