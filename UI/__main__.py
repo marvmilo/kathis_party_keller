@@ -2,6 +2,7 @@ import dash
 import dash_auth
 import dash_bootstrap_components as dbc
 import marvmiloTools as mmt
+import sys
 
 #import other scripts
 import layout
@@ -12,6 +13,12 @@ import rules
 settings = mmt.json.load("./settings.json")
 credentials = mmt.json.load("./credentials.json")
 user_pw_dict = {u.name:u.pw for u in credentials.values()}
+port = settings.port.prod
+try:
+    if sys.argv[1] == "dev":
+        port = settings.port.dev
+except IndexError:
+    pass
 
 #init app
 app = dash.Dash(
@@ -34,6 +41,6 @@ rules.init()
 app.run_server(
     debug = settings.debug, 
     host = "0.0.0.0",
-    port = settings.port,
+    port = port,
     dev_tools_hot_reload = False
 )
