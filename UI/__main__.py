@@ -14,9 +14,11 @@ settings = mmt.json.load("./settings.json")
 credentials = mmt.json.load("./credentials.json")
 user_pw_dict = {u.name:u.pw for u in credentials.values()}
 port = settings.port.prod
+debug = False
 try:
     if sys.argv[1] == "dev":
         port = settings.port.dev
+        debug = True
 except IndexError:
     pass
 
@@ -39,7 +41,7 @@ rules.init()
 
 #run web application
 app.run_server(
-    debug = settings.debug, 
+    debug = debug, 
     host = "0.0.0.0",
     port = port,
     dev_tools_hot_reload = False

@@ -1,0 +1,12 @@
+[Unit]
+Description=Kathis Party Keller UI Service
+After=multi-user.target
+
+[Service]
+Type=simple
+WorkingDirectory=/home/pi/productive/UI
+ExecStart=/usr/bin/python3 /home/pi/productive/UI/__main__.py
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

@@ -3,7 +3,6 @@
     "style": {
         "logo": "/assets/logo.svg"
     },
-    "debug": true,
     "port": {
         "prod": 80,
         "dev": 8080
