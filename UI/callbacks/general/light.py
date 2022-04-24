@@ -5,7 +5,7 @@ import os
 import marvmiloTools as mmt
 
 from flask import request
-roles = {u["name"]:u["role"] for u in mmt.json.load("/home/pi/scripts/UI/credentials.json").values()}
+roles = {u["name"]:u["role"] for u in mmt.json.load("./credentials.json").values()}
 
 # LED strip configuration:
 LED_COUNT      = 175    # Number of LED pixels.

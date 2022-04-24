@@ -6,7 +6,7 @@ import os
 
 def callback(interval, id, loading, image):
     try:
-        path = f"/home/pi/scripts/UI/assets/previews/{id}"
+        path = f"./assets/previews/{id}"
         loaded = {f.split("-")[0]: f for f in os.listdir(path)}
         modes = ["single", "two_color", "pulse", "shoot", "rainbow", "audio_pegel", "audio_brightness", "audio_shoot", "general"]
         all_loaded = True

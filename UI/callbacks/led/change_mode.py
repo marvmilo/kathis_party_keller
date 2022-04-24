@@ -2,7 +2,7 @@ from dash.exceptions import PreventUpdate
 import marvmiloTools as mmt
 
 #values
-led_input_file = "/home/pi/scripts/LED/input.json"
+led_input_file = "../LED/input.json"
 current_active = mmt.json.load(led_input_file).mode
 
 def callback(single_val, two_color_val, pulse_val, shoot_val, rainbow_val, audio_pegel_val, audio_brightness_val, audio_shoot_val, current_selected):

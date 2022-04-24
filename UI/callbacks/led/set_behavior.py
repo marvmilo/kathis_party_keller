@@ -3,7 +3,7 @@ import marvmiloTools as mmt
 import colormap
 
 from flask import request
-roles = {u["name"]:u["role"] for u in mmt.json.load("/home/pi/scripts/UI/credentials.json").values()}
+roles = {u["name"]:u["role"] for u in mmt.json.load("./credentials.json").values()}
 
 def callback(n_set, n_close, n_ok, m1, m2, m3, m4, m5, m6, m7, m8, c1, c2, blur_factor, interval, fade_out):
     if roles[request.authorization['username']] == "admin":
@@ -30,7 +30,7 @@ def callback(n_set, n_close, n_ok, m1, m2, m3, m4, m5, m6, m7, m8, c1, c2, blur_
                 "interval": interval/100,
                 "fade_out": fade_out/100
             }
-            mmt.json.save(input_file, filename = "/home/pi/scripts/LED/input.json")
+            mmt.json.save(input_file, filename = "../LED/input.json")
             
             return [True, 0]
         else:

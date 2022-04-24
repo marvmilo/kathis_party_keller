@@ -4,7 +4,8 @@ After=multi-user.target
 
 [Service]
 Type=simple
-ExecStart=/usr/bin/python3 /home/pi/scripts/LED
+WorkingDirectory=/home/pi/productive
+ExecStart=/usr/bin/python3 /home/pi/productive/LED
 Restart=always
 
 [Install]

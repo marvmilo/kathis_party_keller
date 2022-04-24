@@ -4,7 +4,7 @@ import colormap
 
 def callback(trigger):
     #values
-    led_input_file = "/home/pi/scripts/LED/input.json"
+    led_input_file = "../LED/input.json"
     current_led_settings = mmt.json.load(led_input_file)
     
     return [
