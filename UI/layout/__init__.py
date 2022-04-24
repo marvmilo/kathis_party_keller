@@ -134,7 +134,7 @@ def structure(settings):
                 ],
                 id = "interaction-denied-modal",
                 centered=True,
-                is_open = True
+                #is_open = True
             ),
             dcc.Interval(
                 id = "light-interval",

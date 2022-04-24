@@ -4,7 +4,7 @@ import marvmiloTools as mmt
 import threading
 
 #values
-settings = mmt.json.load("/home/pi/scripts/LED/audio/settings.json")
+settings = mmt.json.load("./LED/audio/settings.json")
 peak = mmt.dictionary.toObj({
     "value": None,
     "last": 0,

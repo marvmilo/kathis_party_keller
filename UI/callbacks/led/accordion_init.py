@@ -3,7 +3,7 @@ import marvmiloTools as mmt
 
 def callback(trigger):
     if trigger:
-        mode = mmt.json.load("/home/pi/scripts/LED/input.json").mode
+        mode = mmt.json.load("../LED/input.json").mode
         item = None
         mapping_dict = {
             0: ["single", "two_color"],

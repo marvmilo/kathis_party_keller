@@ -10,7 +10,7 @@ from . import led
 
 def init(app, layout):
     #cleanup old files
-    preview_folder = "/home/pi/scripts/UI/assets/previews"
+    preview_folder = "./assets/previews"
     shutil.rmtree(preview_folder)
     os.mkdir(preview_folder)
     
@@ -245,7 +245,7 @@ def init(app, layout):
     @app.callback(
         [Output("interaction-denied-modal", "is_open")],
         [Input("shutdown-button", "n_clicks"),
-         Input("interaction-denied-modal-close")],
+         Input("interaction-denied-modal-close", "n_clicks")],
         [State("interaction-denied-modal", "is_open")]
     )
     def callback16(n_shutdown, n_close, is_open):

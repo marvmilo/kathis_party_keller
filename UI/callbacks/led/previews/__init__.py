@@ -284,8 +284,8 @@ def apply(func_name, loading, image, id, diff, general = False):
             "minWidth": "15rem"
         }
     
-    preview_folder = f"/home/pi/scripts/UI/assets/previews/{id}"
-    led_settings = mmt.json.load("/home/pi/scripts/LED/settings.json")[func_name]
+    preview_folder = f"./assets/previews/{id}"
+    led_settings = mmt.json.load("../LED/settings.json")[func_name]
     mode_vals = [k for k, v in led_settings.items() if v]
     mode_vals = list(set(["color" if v.startswith("color") else v for v in mode_vals]))
     

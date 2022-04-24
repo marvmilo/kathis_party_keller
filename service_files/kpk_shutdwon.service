@@ -4,8 +4,9 @@ Description=Kathis Party Keller Shutdown Service
 [Service]
 Type=oneshot
 RemainAfterExit=true
+WorkingDirectory=/home/pi/productive
 ExecStart=/bin/true
-ExecStop=/usr/bin/python3 /home/pi/scripts/service_files/shutdown.py
+ExecStop=/usr/bin/python3 /home/pi/productive/service_files/shutdown.py
 
 [Install]
 WantedBy=multi-user.target

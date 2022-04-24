@@ -8,8 +8,8 @@ import modes
 import audio
 
 #load vals
-settings_file = "/home/pi/scripts/LED/settings.json"
-input_file = "/home/pi/scripts/LED/input.json"
+settings_file = "./LED/settings.json"
+input_file = "./LED/input.json"
 settings = mmt.json.load(settings_file)
 last_input = dict()
 updater_pipe = mmt.dictionary.toObj({"exit": False, "done": True})

@@ -9,8 +9,8 @@ import callbacks
 import rules
 
 #declare vals
-settings = mmt.json.load("/home/pi/scripts/UI/settings.json")
-credentials = mmt.json.load("/home/pi/scripts/UI/credentials.json")
+settings = mmt.json.load("./settings.json")
+credentials = mmt.json.load("./credentials.json")
 user_pw_dict = {u.name:u.pw for u in credentials.values()}
 
 #init app
