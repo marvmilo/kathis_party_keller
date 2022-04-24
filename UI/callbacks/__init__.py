@@ -241,12 +241,12 @@ def init(app, layout):
     def callback15(trigger):
         return led.accordion_init.callback(trigger)
     
-    #pop up interaction denied modal
-    @app.callback(
-        [Output("interaction-denied-modal", "is_open")],
-        [Input("shutdown-button", "n_clicks"),
-         Input("interaction-denied-modal-close")],
-        [State("interaction-denied-modal", "is_open")]
-    )
-    def callback16(n_shutdown, n_close, is_open):
-        return general.interaction_denied.callback(n_shutdown, n_close, is_open)
+    # #pop up interaction denied modal
+    # @app.callback(
+    #     [Output("interaction-denied-modal", "is_open")],
+    #     [Input("shutdown-button", "n_clicks"),
+    #      Input("interaction-denied-modal-close")],
+    #     [State("interaction-denied-modal", "is_open")]
+    # )
+    # def callback16(n_shutdown, n_close, is_open):
+    #     return general.interaction_denied.callback(n_shutdown, n_close, is_open)

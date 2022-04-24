@@ -4,5 +4,8 @@
         "logo": "/assets/logo.svg"
     },
     "debug": true,
-    "port": 80
+    "port": {
+        "prod": 80,
+        "dev": 8080
+    }
 }
