@@ -243,10 +243,15 @@ def init(app, layout):
     
     #pop up interaction denied modal
     @app.callback(
-        [Output("interaction-denied-modal", "is_open")],
+        [Output("interaction-denied-modal", "is_open"),
+         Output("interaction-denied-modal-init", "data")],
         [Input("shutdown-button", "n_clicks"),
-         Input("interaction-denied-modal-close", "n_clicks")],
-        [State("interaction-denied-modal", "is_open")]
+         Input("light-button", "n_clicks"),
+         Input("led-set-behavior", "n_clicks"),
+         Input("interaction-denied-modal-close", "n_clicks"),
+         Input("interaction-denied-modal-ok", "n_clicks")],
+        [State("interaction-denied-modal", "is_open"),
+         State("interaction-denied-modal-init", "data")]
     )
-    def callback16(n_shutdown, n_close, is_open):
-        return general.interaction_denied.callback(n_shutdown, n_close, is_open)
+    def callback16(n_shutdown, n_light, n_led, n_close, n_ok, is_open, init):
+        return general.interaction_denied.callback(n_shutdown, n_light, n_led, n_close, n_ok, is_open, init)

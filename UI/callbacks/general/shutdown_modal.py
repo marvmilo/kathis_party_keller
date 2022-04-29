@@ -11,4 +11,4 @@ def callback(n_shutdown, n_close, n_yes, n_no):
         else:
             return [False, 0]
     else:
-        raise PreventUpdate
+        return [False, 0]

@@ -118,23 +118,38 @@ def structure(settings):
                                 html.Img(
                                     src='/assets/interaction_denied.gif',
                                     style = {
-                                        "maxWidth": "15rem"
+                                        "maxWidth": "10rem"
                                     }
                                 ),
-                                style = mmt.dash.flex_style()
+                                style = mmt.dash.flex_style({"height": "10rem"})
                             ),
                             html.Br(),
                             html.Div(
-                                "NEIN MELVIN NEIN!!!11!!!11",
+                                "Your user got no rights for this Interaction.",
                                 style = mmt.dash.flex_style({"textAlign": "center"})
+                            ),
+                            html.Br(),
+                            html.Div(
+                                dbc.Button(
+                                    "OK",
+                                    id = "interaction-denied-modal-ok",
+                                    style = {
+                                        "width": "10rem",
+                                        "height": "3rem"
+                                    }
+                                ),
+                                style = mmt.dash.flex_style()
                             ),
                             html.Br()
                         ]
                     )
                 ],
                 id = "interaction-denied-modal",
-                centered=True,
-                #is_open = True
+                centered=True
+            ),
+            dcc.Store(
+                id = "interaction-denied-modal-init",
+                data = False
             ),
             dcc.Interval(
                 id = "light-interval",

@@ -1,5 +1,13 @@
 from dash.exceptions import PreventUpdate
+import marvmiloTools as mmt
 
-def callback(n_shutdown, n_close, is_open):
-    #print(n_shutdown)
+from flask import request
+roles = {u["name"]:u["role"] for u in mmt.json.load("./credentials.json").values()}
+
+def callback(n_shutdown, n_light, n_led, n_close, n_ok, is_open, init):
+    if roles[request.authorization['username']] == "viewer":
+        if init:
+            return [not is_open, True]
+        else:
+            return [False, True]
     raise PreventUpdate
