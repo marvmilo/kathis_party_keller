@@ -48,27 +48,28 @@ def structure(settings):
                                             "Yes",
                                             id = "shutdown-modal-yes",
                                             style = {
-                                                "width": "10rem",
+                                                "width": "7rem",
                                                 "height": "3rem"
                                             }
                                         ),
-                                        width = "auto"
+                                        width = "auto",
+                                        style = {"paddingBottom": "1rem"}
                                     ),
                                     dbc.Col(
                                         dbc.Button(
                                             "No",
                                             id = "shutdown-modal-no",
                                             style = {
-                                                "width": "10rem",
+                                                "width": "7rem",
                                                 "height": "3rem"
                                             }
                                         ),
-                                        width = "auto"
+                                        width = "auto",
+                                        style = {"paddingBottom": "1rem"}
                                     )
                                 ],
                                 justify="center",
                             ),
-                            html.Br()
                         ]
                     )
                 ],
@@ -269,12 +270,9 @@ def not_found():
     return html.Div(
         html.Div(
             children = [
-                html.Div(
-                    "404",
-                    style = mmt.dash.flex_style({
-                        "fontSize": "7rem",
-                        "fontWeight": "bold"
-                    })
+                html.Img(
+                    src='/assets/404.png',
+                    style = {"width": "15rem"}
                 ),
                 html.Div(
                     "Not Found!",
