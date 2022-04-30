@@ -1,7 +1,7 @@
 {
     "name": "Kathis Party Keller",
     "style": {
-        "logo": "/assets/logo.svg"
+        "logo": "/assets/logo.png"
     },
     "port": {
         "prod": 80,

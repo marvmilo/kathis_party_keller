@@ -228,7 +228,7 @@ def navbar(title, logo):
     return mmt.dash.nav.bar(
         logo = f"url({logo})",
         logo_style = {
-            "width": "5rem", 
+            "width": "5.15rem", 
             "height": "5rem",
             "backgroundSize": "cover",
         },
