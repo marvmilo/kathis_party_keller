@@ -9,7 +9,7 @@ import rpi_ws281x as led
 import audio
 
 # LED strip configuration:
-LED_COUNT      = 150     # Number of LED pixels.
+LED_COUNT      = 129     # Number of LED pixels.
 LED_PIN        = 18      # GPIO pin connected to the pixels (18 uses PWM!).
 #LED_PIN        = 10      # GPIO pin connected to the pixels (10 uses SPI /dev/spidev0.0).
 LED_FREQ_HZ    = 800000  # LED signal frequency in hertz (usually 800khz)
@@ -101,12 +101,12 @@ def shoot(input_vals, pipe):
     color = input_vals.color[0]
     blur_color = input_vals.color[1]
     interval_min = 0.1
-    interval_max = 5
+    interval_max = 15
     interval = ((interval_max - interval_min) * input_vals.interval) + interval_min
     interval_last = time.time()
-    fade_out_min = 0.25
+    fade_out_min = 1
     fade_out_max = 15
-    fade_out = ((fade_out_max - fade_out_min) * (input_vals.fade_out)) + fade_out_min
+    fade_out = (fade_out_max -((fade_out_max - fade_out_min) * (input_vals.fade_out))) + fade_out_min
     time_per_pixel = fade_out / strip.numPixels()
     move_last = time.time()
     move_interval = 0
@@ -156,7 +156,7 @@ def rainbow(input_vals, pipe):
     #values
     interval_min = 1
     interval_max = 30
-    interval = (((interval_max - interval_min) * input_vals.interval) + interval_min)/256
+    interval = ((interval_max-((interval_max - interval_min) * input_vals.fade_out)) + interval_min)/256
     interval_last = time.time()
 
     #rainbowwheel
@@ -198,7 +198,7 @@ def audio_pegel(input_vals, pipe):
     blur = int(input_vals.blur_factor * max_blur)
 
     #prepare audio
-    audio.fade_out = input_vals.fade_out
+    audio.fade_out = 1 - input_vals.fade_out
 
     while True:
         try:
@@ -236,7 +236,7 @@ def audio_shoot(input_vals, pipe):
     interval_last = time.time()
     fade_out_min = 0.25
     fade_out_max = 7.5
-    fade_out = ((fade_out_max - fade_out_min) * (input_vals.fade_out)) + fade_out_min
+    fade_out = (fade_out_max - ((fade_out_max - fade_out_min) * (input_vals.fade_out))) + fade_out_min
     time_per_pixel = fade_out / strip.numPixels()
     move_last = time.time()
     move_interval = 0
@@ -292,7 +292,7 @@ def audio_shoot(input_vals, pipe):
 # audio_brightness mode function
 def audio_brightness(input_vals, pipe):
     #prepare audio
-    audio.fade_out = input_vals.fade_out
+    audio.fade_out = 1 - input_vals.fade_out
 
     while True:
         audio_perc = audio.percentage

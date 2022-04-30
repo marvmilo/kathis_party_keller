@@ -1,5 +1,5 @@
 {
-    "mode": "audio_pegel",
+    "mode": "audio_shoot",
     "color": [
         [
             30,
@@ -8,8 +8,8 @@
         ],
         [
             255,
-            0,
-            0
+            255,
+            255
         ]
     ],
     "blur_factor": 0.5,

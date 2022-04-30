@@ -31,8 +31,8 @@
         "color1": false,
         "color2": false,
         "blur_factor": false,
-        "interval": [10, 100],
-        "fade_out": false
+        "interval": false,
+        "fade_out": true
     },
     "audio_pegel": {
         "color1": true,

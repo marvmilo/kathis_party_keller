@@ -87,7 +87,7 @@ def shoot(path):
     frame.gradient(input_vals.blur_factor, connect_ends = True)
     gif_file.add_frame(frame.get_image())
     
-    max_speed = 25
+    max_speed = 100
     speed = int(max_speed * input_vals.fade_out)
     try:
         speed = int(frame.overhang_width / int(frame.overhang_width / speed))
@@ -120,7 +120,7 @@ def rainbow(path):
         frame.add_gradient_color(c, 1/len(colors))
     frame.gradient(input_vals.blur_factor, connect_ends = True)
     
-    max_speed = 5
+    max_speed = 20
     speed = int(max_speed * input_vals.fade_out)
     try:
         speed = int(frame.overhang_width / int(frame.overhang_width / speed))
@@ -146,40 +146,10 @@ def audio_pegel(path):
         frame.gradient(blur_factor = input_vals.blur_factor)
         gif_file.add_frame(frame.get_image())
         
-    max_speed = 0.5
+    max_speed = 0.75
     speed = max_speed * input_vals.fade_out
-    if speed < 0.1:
-        speed = 0.1
-    
-    for pegel in [0.5, 1]:
-        add_frame(0,1)
-        add_frame(pegel, 1-pegel)
-        while True:
-            pegel = pegel - speed
-            if pegel > 0:
-                add_frame(pegel, 1-pegel)
-            else:
-                break
-    
-    gif_file.save(path)
-
-def audio_pegel(path):
-    gif_file = gif.Gif()
-    frame_width = 300
-    
-    def add_frame(phases1, phases2):
-        nonlocal frame_width
-        frame = gif.Frame()
-        frame.add_gradient_color(input_vals.color[0], phases1)
-        frame.add_gradient_color(input_vals.color[1], phases2)
-        frame.gradient(blur_factor = input_vals.blur_factor)
-        gif_file.add_frame(frame.get_image())
-        frame_width = frame.width
-        
-    max_speed = 0.5
-    speed = max_speed * input_vals.fade_out
-    if speed < 0.1:
-        speed = 0.1
+    if speed < 0.025:
+        speed = 0.025
     
     for pegel in [0.5, 1]:
         add_frame(0,1)
@@ -202,10 +172,10 @@ def audio_brightness(path):
         frame.fill(color)
         gif_file.add_frame(frame.get_image())
         
-    max_speed = 0.5
+    max_speed = 0.75
     speed = max_speed * input_vals.fade_out
-    if speed < 0.1:
-        speed = 0.1
+    if speed < 0.025:
+        speed = 0.025
         
     for pegel in [0.5, 1]:
         add_frame(0)
@@ -227,8 +197,8 @@ def audio_shoot(path):
     
     max_interval = 0.3
     interval = max_interval * input_vals.interval
-    if interval < 0.1:
-        interval = 0.1
+    if interval < 0.025:
+        interval = 0.025
     filler_interval = (1 - (interval * 2))/3
         
     frame.add_gradient_color(c1, interval)
@@ -239,8 +209,8 @@ def audio_shoot(path):
     frame.gradient(input_vals.blur_factor, connect_ends = True, hard_right = c1)
     gif_file.add_frame(frame.get_image())
     
-    max_speed = 30
-    min_speed = 10
+    max_speed = 60
+    min_speed = 5
     speed = int(((max_speed-min_speed) * input_vals.fade_out) + min_speed)
     try:
         speed = int(frame.overhang_width / int(frame.overhang_width / speed))
