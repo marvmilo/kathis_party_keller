@@ -11,7 +11,10 @@ from . import led
 def init(app, layout):
     #cleanup old files
     preview_folder = "./assets/previews"
-    shutil.rmtree(preview_folder)
+    try:    
+        shutil.rmtree(preview_folder)
+    except FileNotFoundError:
+        pass
     os.mkdir(preview_folder)
     
     #navbar toggler callback
