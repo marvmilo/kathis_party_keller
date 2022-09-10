@@ -1,5 +1,6 @@
 import os
 import rpi_ws281x as led
+import time
 
 # LED strip configuration:
 LED_COUNT      = 150     # Number of LED pixels.
@@ -13,6 +14,7 @@ LED_CHANNEL    = 0       # set to '1' for GPIOs 13, 19, 41, 45 or 53
 
 #stop led service
 os.system("sudo systemctl stop kpk_led.service")
+time.sleep(1)
 
 #init LED strip
 strip = led.Adafruit_NeoPixel(LED_COUNT, LED_PIN, LED_FREQ_HZ, LED_DMA, LED_INVERT, LED_BRIGHTNESS, LED_CHANNEL)

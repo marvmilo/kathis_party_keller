@@ -29,7 +29,8 @@ while True:
 
     #apply brightness filter
     for i, color in enumerate(input_vals.color):
-        multiplier = (255*1.5)/sum(color)
+        if sum(color): multiplier = (255*1.5)/sum(color)
+        else: multiplier = 1
         if multiplier > 1: multiplier = 1
         color = [int(c*multiplier) for c in color]
         input_vals.color[i] = color
